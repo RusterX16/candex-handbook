@@ -79,7 +79,7 @@ Each environment is a Docker Compose stack of an **API** container and a **Postg
 | prod | `compose.prod.yaml` | `api-prod` + `db-prod` |
 
 :::note[To confirm]
-TLS and reverse proxying are not in these compose files, though a `CADDY_EMAIL` variable exists — so the public entrypoint (likely **Caddy**) appears to be handled at the server level. The **Deployment** handbook *(planned)* will document the exact topology.
+TLS and reverse proxying are not in these compose files, though a `CADDY_EMAIL` variable exists — so the public entrypoint (likely **Caddy**) appears to be handled at the server level. The **[Deployment](/en/deployment/)** handbook documents the exact topology.
 :::
 
 ## Design notes

@@ -3,6 +3,17 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.9.0] — 2026-10-21
+
+### Added
+- **Deployment** handbook (EN + FR): per-environment Docker Compose stacks, the
+  multi-stage API image, operating a running stack (`candex.sh`), the CI/CD
+  workflows, the server-level reverse proxy (to confirm), and the mobile app's
+  store releases via Fastlane.
+
+### Changed
+- Linked Deployment from Architecture and Back-end.
+
 ## [0.8.0] — 2026-10-21
 
 ### Added

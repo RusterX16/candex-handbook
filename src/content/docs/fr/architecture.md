@@ -79,7 +79,7 @@ Chaque environnement est une stack Docker Compose d'un conteneur **API** et d'un
 | prod | `compose.prod.yaml` | `api-prod` + `db-prod` |
 
 :::note[À confirmer]
-Le TLS et le reverse-proxy ne sont pas dans ces fichiers compose, bien qu'une variable `CADDY_EMAIL` existe — le point d'entrée public (probablement **Caddy**) semble donc géré au niveau serveur. Le handbook **Déploiement** *(à venir)* documentera la topologie exacte.
+Le TLS et le reverse-proxy ne sont pas dans ces fichiers compose, bien qu'une variable `CADDY_EMAIL` existe — le point d'entrée public (probablement **Caddy**) semble donc géré au niveau serveur. Le handbook **[Déploiement](/fr/deployment/)** documente la topologie exacte.
 :::
 
 ## Notes de conception

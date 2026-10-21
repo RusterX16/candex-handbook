@@ -44,6 +44,7 @@ export default defineConfig({
           translations: { fr: 'Guides' },
           items: [
             { label: 'Local Installation', translations: { fr: 'Installation locale' }, slug: 'local-installation' },
+            { label: 'Deployment', translations: { fr: 'Déploiement' }, slug: 'deployment' },
           ],
         },
       ],
