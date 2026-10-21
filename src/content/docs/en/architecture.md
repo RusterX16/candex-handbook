@@ -66,7 +66,7 @@ Both front-ends are Angular + Ionic and talk to the same REST API.
 - **Mobile app** (`candex-app`) — state managed with **NgRx**, organised into feature slices: `auth`, `dex`, `drink`, `user`, `preferences`, `app`.
 - **Admin dashboard** (`candex-dashboard`) — Angular + **Angular Material**, used to keep the catalogue accurate.
 
-See the **Front-end** handbook *(planned)* for structure and conventions.
+See the **[Front-end](/en/front-end/)** handbook for structure and conventions.
 
 ## Deployment topology
 

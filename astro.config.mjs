@@ -35,6 +35,7 @@ export default defineConfig({
             { label: 'Overview', translations: { fr: 'Vue d\'ensemble' }, slug: 'architecture' },
             { label: 'Database & Model', translations: { fr: 'Base de données & Modèle' }, slug: 'database' },
             { label: 'Back-end', translations: { fr: 'Back-end' }, slug: 'back-end' },
+            { label: 'Front-end', translations: { fr: 'Front-end' }, slug: 'front-end' },
           ],
         },
         {

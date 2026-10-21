@@ -3,6 +3,19 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.7.0] — 2026-10-21
+
+### Added
+- **Front-end** handbook (EN + FR): the mobile app (standalone Angular, NgRx
+  slices with a one-way flow diagram, services, guards, interceptors, pipes,
+  navigation, cross-cutting concerns) and the admin dashboard (Angular Material,
+  service-based state).
+
+### Changed
+- Back-end handbook: detailed each layer's responsibility, and documented every
+  exception with its HTTP status and when it is raised.
+- Linked the Front-end handbook from Architecture.
+
 ## [0.6.0] — 2026-10-21
 
 ### Added

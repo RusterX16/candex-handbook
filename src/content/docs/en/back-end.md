@@ -24,6 +24,20 @@ flowchart LR
   class pg store
 ```
 
+Each layer has exactly one job:
+
+| Layer | Responsibility | Must not |
+|-------|----------------|----------|
+| **Controller** | Map HTTP to a method, enforce access (`@PreAuthorize`), return a `Result`. Thin. | Hold business logic or touch the database |
+| **Service** (`service/core`) | The business logic: orchestration, transactions, rule checks, calling repositories, mapping entities ↔ DTOs, raising exceptions. | Know anything about HTTP |
+| **Repository** | Spring Data JPA access to one aggregate — derived and custom queries. | Hold business rules |
+| **Entity** | The JPA domain model (persisted state). | Leave the service boundary |
+| **DTO** (`dto/request`, `dto/response`) | The API's input and output shapes. | Carry persistence concerns |
+| **Mapper** (MapStruct) | Convert entities ↔ DTOs at the service boundary. | — |
+| **Cross-cutting** (`security`, `exception`, `validation`, `config`, `job`, `result`) | Auth, structured errors, input validation, configuration, scheduled jobs, the response envelope. | — |
+
+The golden rule: entities never reach the controller, and controllers never hold logic.
+
 ## The response envelope
 
 Every endpoint returns a generic `Result<T>`:
@@ -72,14 +86,34 @@ The domain logic sits in `service/core` — one service per resource (`DrinkServ
 
 ## Error handling
 
-Errors are returned in the `Result` envelope's `error` field. Exceptions derive from a common `CustomException` and fall into two families:
+Every exception extends a common `CustomException`, which **carries its own `HttpStatus`** and serialises into the `Result` envelope's `error` field (a `dto/response/Error` holding the message and status code). Exceptions fall into two families.
 
-| Family | Examples |
-|--------|----------|
-| `exception/api` | `ElementNotFoundException`, `InvalidFieldValueException`, `UniqueConstraintViolationException`, `ImmutableFieldModificationException`, `MissingRequiredFieldException`, `SqlExecutionException` |
-| `exception/business` | `InvalidDexPositionException`, `MissingRequiredCanException`, `MissingRequiredLocalizationException`, `DrinkAlreadyHasPredecessorException`, `InvalidEditionConfigurationException` |
+**API errors** (`exception/api`) — request and data problems:
 
-`api` exceptions describe request/data problems; `business` exceptions describe domain-rule violations.
+| Exception | HTTP | Raised when |
+|-----------|------|-------------|
+| `ElementNotFoundException` | 404 | A referenced entity does not exist |
+| `InvalidFieldValueException` | 400 | A field has an invalid format or value |
+| `MissingRequiredFieldException` | 400 | A required field is absent |
+| `UnsupportedFieldException` | 400 | An unknown/unsupported field is used |
+| `InvalidImportPayloadException` | 400 | A bulk-import payload is malformed |
+| `SqlExecutionException` | 400 | A SQL-console query fails |
+| `ImmutableFieldModificationException` | 409 | A create-only field is changed after creation |
+| `UniqueConstraintViolationException` | 409 | A uniqueness constraint is violated |
+| `MissingConfigurationException` | 422 | Required configuration (e.g. an app version) is missing |
+
+**Business errors** (`exception/business`) — domain-rule violations:
+
+| Exception | HTTP | Raised when |
+|-----------|------|-------------|
+| `MissingRequiredCanException` | 400 | A drink is saved without any can |
+| `MissingRequiredLocalizationException` | 400 | A drink is saved without any localization |
+| `InvalidDexPositionException` | 400 | A World Dex position is out of range |
+| `InvalidEditionConfigurationException` | 400 | An edition / variant is misconfigured |
+| `DrinkAlreadyHasPredecessorException` | 409 | A drink is linked as predecessor to two drinks |
+| `ImageAnalysisException` | 422 | Image analysis fails |
+
+In short: `api` exceptions describe what is wrong with the request; `business` exceptions describe which domain rule was broken.
 
 ## Validation
 

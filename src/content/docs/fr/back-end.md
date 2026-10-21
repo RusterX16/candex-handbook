@@ -24,6 +24,20 @@ flowchart LR
   class pg store
 ```
 
+Chaque couche a exactement un rôle :
+
+| Couche | Responsabilité | Ne doit pas |
+|--------|----------------|-------------|
+| **Contrôleur** | Associer une requête HTTP à une méthode, contrôler l'accès (`@PreAuthorize`), renvoyer un `Result`. Mince. | Porter de la logique métier ni toucher la base |
+| **Service** (`service/core`) | La logique métier : orchestration, transactions, vérification des règles, appel des repositories, mapping entités ↔ DTO, levée d'exceptions. | Connaître quoi que ce soit du HTTP |
+| **Repository** | Accès Spring Data JPA à un agrégat — requêtes dérivées et personnalisées. | Porter des règles métier |
+| **Entité** | Le modèle de domaine JPA (état persisté). | Franchir la frontière du service |
+| **DTO** (`dto/request`, `dto/response`) | Les formes d'entrée et de sortie de l'API. | Porter des préoccupations de persistance |
+| **Mapper** (MapStruct) | Convertir entités ↔ DTO à la frontière du service. | — |
+| **Transverse** (`security`, `exception`, `validation`, `config`, `job`, `result`) | Auth, erreurs structurées, validation, configuration, jobs planifiés, enveloppe de réponse. | — |
+
+La règle d'or : les entités n'atteignent jamais le contrôleur, et les contrôleurs ne portent jamais de logique.
+
 ## L'enveloppe de réponse
 
 Chaque endpoint renvoie un `Result<T>` générique :
@@ -72,14 +86,34 @@ La logique métier est dans `service/core` — un service par ressource (`DrinkS
 
 ## Gestion d'erreurs
 
-Les erreurs sont renvoyées dans le champ `error` de l'enveloppe `Result`. Les exceptions dérivent d'un `CustomException` commun et se répartissent en deux familles :
+Chaque exception étend un `CustomException` commun, qui **porte son propre `HttpStatus`** et se sérialise dans le champ `error` de l'enveloppe `Result` (un `dto/response/Error` contenant le message et le code de statut). Les exceptions se répartissent en deux familles.
 
-| Famille | Exemples |
-|---------|----------|
-| `exception/api` | `ElementNotFoundException`, `InvalidFieldValueException`, `UniqueConstraintViolationException`, `ImmutableFieldModificationException`, `MissingRequiredFieldException`, `SqlExecutionException` |
-| `exception/business` | `InvalidDexPositionException`, `MissingRequiredCanException`, `MissingRequiredLocalizationException`, `DrinkAlreadyHasPredecessorException`, `InvalidEditionConfigurationException` |
+**Erreurs API** (`exception/api`) — problèmes de requête et de données :
 
-Les exceptions `api` décrivent des problèmes de requête/données ; les exceptions `business` décrivent des violations de règles métier.
+| Exception | HTTP | Levée quand |
+|-----------|------|-------------|
+| `ElementNotFoundException` | 404 | Une entité référencée n'existe pas |
+| `InvalidFieldValueException` | 400 | Un champ a un format ou une valeur invalide |
+| `MissingRequiredFieldException` | 400 | Un champ requis est absent |
+| `UnsupportedFieldException` | 400 | Un champ inconnu/non supporté est utilisé |
+| `InvalidImportPayloadException` | 400 | Un payload d'import en masse est malformé |
+| `SqlExecutionException` | 400 | Une requête de la console SQL échoue |
+| `ImmutableFieldModificationException` | 409 | Un champ immuable est modifié après création |
+| `UniqueConstraintViolationException` | 409 | Une contrainte d'unicité est violée |
+| `MissingConfigurationException` | 422 | Une configuration requise (ex. une version d'app) manque |
+
+**Erreurs métier** (`exception/business`) — violations de règles de domaine :
+
+| Exception | HTTP | Levée quand |
+|-----------|------|-------------|
+| `MissingRequiredCanException` | 400 | Une boisson est enregistrée sans aucune canette |
+| `MissingRequiredLocalizationException` | 400 | Une boisson est enregistrée sans aucune localisation |
+| `InvalidDexPositionException` | 400 | Une position du World Dex est hors limites |
+| `InvalidEditionConfigurationException` | 400 | Une édition / variante est mal configurée |
+| `DrinkAlreadyHasPredecessorException` | 409 | Une boisson est liée comme prédécesseur à deux boissons |
+| `ImageAnalysisException` | 422 | L'analyse d'image échoue |
+
+En bref : les exceptions `api` décrivent ce qui ne va pas dans la requête ; les exceptions `business` décrivent quelle règle métier a été enfreinte.
 
 ## Validation
 
