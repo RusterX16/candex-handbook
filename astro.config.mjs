@@ -5,6 +5,7 @@ import starlight from '@astrojs/starlight';
 // Candex Handbook — English is canonical; French is an alternate presentation.
 export default defineConfig({
   site: 'https://candex.app',
+  vite: { optimizeDeps: { include: ['mermaid'] } },
   integrations: [
     starlight({
       title: 'Candex Handbook',
