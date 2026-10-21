@@ -74,7 +74,7 @@ To change the schema or reference data, add the next `V<n>__short_description.sq
 
 ## World Dex ordering
 
-The World Dex is an **ordered** catalogue, and that order is kept consistent **in the database** rather than in the app. PostgreSQL routines (`V4`) and triggers (`V5`) shift entries when drinks are inserted or deleted, so positions stay contiguous and correct. This ordering logic has been refined across several migrations (`V9`, `V12`, `V17`–`V20`); the migration files are the source of truth for the exact behaviour. The **Back-end** handbook *(planned)* covers how the API exposes this.
+The World Dex is an **ordered** catalogue, and that order is kept consistent **in the database** rather than in the app. PostgreSQL routines (`V4`) and triggers (`V5`) shift entries when drinks are inserted or deleted, so positions stay contiguous and correct. This ordering logic has been refined across several migrations (`V9`, `V12`, `V17`–`V20`); the migration files are the source of truth for the exact behaviour. The **[Back-end](/en/back-end/)** handbook covers how the API exposes this.
 
 ## Read-only SQL console
 

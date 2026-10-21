@@ -3,6 +3,16 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.6.0] — 2026-10-21
+
+### Added
+- **Back-end** handbook (EN + FR): request flow, the `Result` response envelope,
+  the API surface, services, error handling (`api` / `business` taxonomy),
+  authorization, scheduled jobs, and configuration.
+
+### Changed
+- Linked the Back-end handbook from the Database handbook.
+
 ## [0.5.0] — 2026-10-21
 
 ### Added
