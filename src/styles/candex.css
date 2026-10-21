@@ -110,3 +110,30 @@
   .tech-card { break-inside: avoid; border-color: #ccc !important; color: #111 !important; text-decoration: none !important; }
   .tech-card .tc-note { color: #555 !important; }
 }
+
+/* ---- Download PDF button (next to the page title) ---- */
+.candex-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.candex-title-row > :first-child { flex: 1 1 auto; min-width: 0; }
+.pdf-download {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--sl-color-text-accent);
+  border: 1px solid var(--sl-color-accent);
+  border-radius: 0.55rem;
+  transition: background .15s ease, color .15s ease;
+}
+.pdf-download:hover { background: var(--sl-color-accent); color: #00161f; }
+@media print { .pdf-download { display: none !important; } }

@@ -1,0 +1,15 @@
+---
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+const parts = Astro.url.pathname.split('/').filter(Boolean);
+const locale = parts[0] === 'fr' ? 'fr' : 'en';
+const slug = parts.length ? parts[parts.length - 1] : 'index';
+const href = `/pdf/${slug}-${locale}.pdf`;
+const label = locale === 'fr' ? 'Télécharger le PDF' : 'Download PDF';
+---
+<div class="candex-title-row">
+  <Default><slot /></Default>
+  <a class="pdf-download" href={href} download aria-label={label}>
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    <span>{label}</span>
+  </a>
+</div>

@@ -14,7 +14,10 @@ export default defineConfig({
         fr: { label: 'Français', lang: 'fr' },
       },
       customCss: ['./src/styles/candex.css'],
-      components: { Head: './src/components/Head.astro' },
+      components: {
+        Head: './src/components/Head.astro',
+        PageTitle: './src/components/PageTitle.astro',
+      },
       sidebar: [
         {
           label: 'Start here',
