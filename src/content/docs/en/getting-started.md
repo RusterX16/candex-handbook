@@ -1,5 +1,5 @@
 ---
-title: "Getting Started — Product"
+title: "Understanding Candex"
 description: Understand Candex as a product — what it is, how it feels to use, and the ideas behind it.
 ---
 
@@ -60,7 +60,7 @@ Some older product notes mention ideas like *intake* or *wishlist*. These are no
 
 ## Where to go next
 
-- **Here to work on the code?** → [Getting Started — For developers](/en/getting-started-dev/)
+- **Here to work on the code?** → [Working on Candex](/en/getting-started-dev/)
 - Want the exact definitions of each term? → Glossary / Domain *(planned)*
 - Curious about the product vision and roadmap? → Product *(planned)*
 

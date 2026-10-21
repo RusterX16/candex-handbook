@@ -1,5 +1,5 @@
 ---
-title: "Prise en main — Produit"
+title: "Comprendre Candex"
 description: Comprendre Candex en tant que produit — ce que c'est, l'expérience, et les idées derrière.
 ---
 
@@ -60,7 +60,7 @@ D'anciennes notes produit mentionnent des idées comme *intake* ou *wishlist*. E
 
 ## Où aller ensuite
 
-- **Ici pour travailler sur le code ?** → [Prise en main — Développeurs](/fr/getting-started-dev/)
+- **Ici pour travailler sur le code ?** → [Travailler sur Candex](/fr/getting-started-dev/)
 - Les définitions précises de chaque terme → Glossaire / Domaine *(à venir)*
 - La vision produit et la roadmap → Produit *(à venir)*
 

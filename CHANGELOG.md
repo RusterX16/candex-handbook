@@ -3,6 +3,19 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.2.1] — 2026-10-21
+
+### Changed
+- Reworked the "Download PDF" action into a subtle link under the page title.
+- Renamed the Getting Started handbooks to **Understanding Candex** (product) and
+  **Working on Candex** (developers).
+- Redrew the system diagram: grouped clients, brand colours, clearer edges.
+
+### Added
+- Brand logos for NgRx, Maven, Flyway, Spring Security, JUnit, and Prettier.
+- Split the developer tech stack into **Mobile app** and **Admin dashboard**.
+- Listed `candex-handbook`, `candex-crawler`, and `candex-ai` in the repositories table.
+
 ## [0.2.0] — 2026-10-21
 
 ### Changed
