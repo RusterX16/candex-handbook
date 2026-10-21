@@ -3,6 +3,17 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.10.0] — 2026-10-21
+
+### Added
+- **Backups** handbook (EN + FR): the production PostgreSQL backup strategy
+  (daily `pg_dump -Fc` + GFS retention + a kept-forever per-version snapshot),
+  the `daily_backup.sh` / selective `dump_*.sh` scripts, restore testing, and the
+  GitHub Actions automation (`backup-prod.yml`, pre-deploy snapshot).
+
+### Changed
+- Linked Backups from the Deployment handbook.
+
 ## [0.9.0] — 2026-10-21
 
 ### Added

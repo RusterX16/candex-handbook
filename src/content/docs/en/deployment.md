@@ -75,6 +75,6 @@ git push && git push origin 1.2.0
 
 ## Where to go next
 
-- Database backups → **Backups** *(planned)*
+- Database backups → [Backups](/en/backups/)
 - Run it on your machine → [Local Installation](/en/local-installation/)
 - The API itself → [Back-end](/en/back-end/)

@@ -75,6 +75,6 @@ git push && git push origin 1.2.0
 
 ## Où aller ensuite
 
-- Sauvegardes de la base → **Backups** *(à venir)*
+- Sauvegardes de la base → [Sauvegardes](/fr/backups/)
 - La lancer sur votre machine → [Installation locale](/fr/local-installation/)
 - L'API elle-même → [Back-end](/fr/back-end/)
