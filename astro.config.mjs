@@ -1,0 +1,29 @@
+// @ts-check
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+
+// Candex Handbook — English is canonical; French is an alternate presentation.
+export default defineConfig({
+  site: 'https://candex.app',
+  integrations: [
+    starlight({
+      title: 'Candex Handbook',
+      defaultLocale: 'en',
+      locales: {
+        en: { label: 'English', lang: 'en' },
+        fr: { label: 'Français', lang: 'fr' },
+      },
+      customCss: ['./src/styles/candex.css'],
+      components: { Head: './src/components/Head.astro' },
+      sidebar: [
+        {
+          label: 'Start here',
+          translations: { fr: 'Démarrer' },
+          items: [
+            { label: 'Getting Started', translations: { fr: 'Prise en main' }, slug: 'getting-started' },
+          ],
+        },
+      ],
+    }),
+  ],
+});

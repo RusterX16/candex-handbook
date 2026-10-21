@@ -1,0 +1,112 @@
+/*
+  Candex brand tokens for the documentation site.
+  Core values are taken verbatim from candex-app/src/theme/variables.scss:
+    primary  #00B1FF   shade #009ce0   tint #1ab9ff
+    teal     #033C44
+    font     Rubik (weights 400 / 500 / 700)
+  Accent-low / accent-high are UI tints derived from the primary for
+  Starlight's chrome; they are not app tokens.
+*/
+
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Rubik-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Rubik-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Rubik-Bold.ttf') format('truetype');
+}
+
+:root {
+  --sl-font: 'Rubik', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* Dark theme (Starlight default) */
+:root {
+  --sl-color-accent-low: #012b3d;
+  --sl-color-accent: #00B1FF;
+  --sl-color-accent-high: #b3e6ff;
+  --sl-color-text-accent: #33c0ff;
+}
+
+/* Light theme */
+:root[data-theme='light'] {
+  --sl-color-accent-low: #cdeeff;
+  --sl-color-accent: #009ce0;
+  --sl-color-accent-high: #023a42;
+  --sl-color-text-accent: #0089c4;
+}
+
+/* ---- Print / PDF ---- */
+@media print {
+  /* Hide site chrome: header, sidebars, search, menus, pager */
+  header.header,
+  .sidebar,
+  .right-sidebar,
+  starlight-menu-button,
+  site-search,
+  mobile-starlight-toc,
+  .pagination-links,
+  .sl-flex.print\:hidden { display: none !important; }
+
+  .main-frame { padding-top: 0 !important; }
+  .main-pane, main { width: 100% !important; max-width: 100% !important; }
+
+  html, body { background: #ffffff !important; }
+  .sl-markdown-content { color: #111418 !important; }
+  .sl-markdown-content a { color: #0089c4 !important; text-decoration: underline; }
+
+  /* Keep structures intact across page breaks */
+  h1, h2, h3, h4 { break-after: avoid-page; }
+  pre, table, figure, .mermaid, blockquote { break-inside: avoid; }
+  .sl-markdown-content :is(h2, h3) { margin-top: 1.4em; }
+}
+
+/* ---- Tech stack grid ---- */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 1.75rem;
+}
+.tech-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.65rem;
+  text-decoration: none;
+  color: var(--sl-color-white);
+  transition: border-color .15s ease, transform .15s ease;
+}
+.tech-card:hover { border-color: var(--sl-color-accent); transform: translateY(-1px); }
+.tech-card img { width: 30px; height: 30px; flex: 0 0 auto; }
+.tech-card .tc-mono {
+  width: 30px; height: 30px; flex: 0 0 auto;
+  display: grid; place-items: center;
+  border-radius: 7px;
+  background: var(--sl-color-accent-low);
+  color: var(--sl-color-text-accent);
+  font-weight: 700; font-size: 0.72rem;
+}
+.tech-card .tc-name { font-weight: 600; line-height: 1.15; }
+.tech-card .tc-note { display: block; font-size: 0.75rem; font-weight: 400; color: var(--sl-color-gray-3); }
+
+@media print {
+  .tech-card { break-inside: avoid; border-color: #ccc !important; color: #111 !important; text-decoration: none !important; }
+  .tech-card .tc-note { color: #555 !important; }
+}

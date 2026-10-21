@@ -1,0 +1,54 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+---
+<Default><slot /></Default>
+
+<script>
+  import mermaid from 'mermaid';
+
+  const themeName = () =>
+    document.documentElement.dataset.theme === 'light' ? 'default' : 'dark';
+
+  // Expressive Code renders each source line as a .ec-line; rebuild the
+  // original multi-line source by joining them with newlines.
+  function extractSource(pre) {
+    const lines = pre.querySelectorAll('.ec-line');
+    if (lines.length) return Array.from(lines, (l) => l.textContent).join('\n');
+    return pre.textContent || '';
+  }
+
+  async function renderMermaid() {
+    document.querySelectorAll('pre[data-language="mermaid"]').forEach((pre) => {
+      const fig = pre.closest('figure') || pre;
+      const src = extractSource(pre);
+      const holder = document.createElement('pre');
+      holder.className = 'mermaid';
+      holder.setAttribute('data-diagram', encodeURIComponent(src));
+      holder.textContent = src;
+      fig.replaceWith(holder);
+    });
+
+    const blocks = document.querySelectorAll('pre.mermaid');
+    if (!blocks.length) return;
+    mermaid.initialize({ startOnLoad: false, theme: themeName(), securityLevel: 'strict' });
+    blocks.forEach((el) => {
+      const src = el.getAttribute('data-diagram');
+      if (src) {
+        el.removeAttribute('data-processed');
+        el.innerHTML = decodeURIComponent(src);
+      }
+    });
+    try { await mermaid.run({ querySelector: 'pre.mermaid' }); } catch (e) { /* keep source visible on error */ }
+  }
+
+  // Render on first load (view transitions are not enabled, so astro:page-load
+  // alone is not enough) and again after any client navigation or theme change.
+  if (document.readyState !== 'loading') renderMermaid();
+  else document.addEventListener('DOMContentLoaded', renderMermaid);
+  document.addEventListener('astro:page-load', renderMermaid);
+  new MutationObserver((records) => {
+    for (const r of records) {
+      if (r.attributeName === 'data-theme') { renderMermaid(); break; }
+    }
+  }).observe(document.documentElement, { attributes: true });
+</script>
