@@ -3,6 +3,22 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.11.0] — 2026-10-21
+
+### Added
+- **Testing** handbook (EN + FR): the two-level API test strategy (JUnit 5 +
+  Mockito unit tests, Testcontainers integration against a real PostgreSQL),
+  the JaCoCo 100% coverage gate and Checkstyle, the Angular front-ends'
+  Karma/Jasmine unit tests and Cypress e2e, and the per-repo CI quality gates.
+- Testing **conventions** grounded in the codebase: one unit per file, one
+  `@Nested`/`describe` per method, one `@Test`/`it` per case, a smoke test per
+  file (`contextLoads` / `should be created`), and shared fixtures
+  (`util/test/fixture`, `utils/tests/mocks.ts`) instead of re-created objects.
+- New **Quality** sidebar group (FR: Qualité).
+
+### Changed
+- Added `/en/testing/` and `/fr/testing/` to the PDF export routes.
+
 ## [0.10.0] — 2026-10-21
 
 ### Added

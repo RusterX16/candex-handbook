@@ -40,6 +40,13 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Quality',
+          translations: { fr: 'Qualité' },
+          items: [
+            { label: 'Testing', translations: { fr: 'Tests' }, slug: 'testing' },
+          ],
+        },
+        {
           label: 'Guides',
           translations: { fr: 'Guides' },
           items: [
