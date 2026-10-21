@@ -28,6 +28,13 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Architecture',
+          translations: { fr: 'Architecture' },
+          items: [
+            { label: 'Overview', translations: { fr: 'Vue d\'ensemble' }, slug: 'architecture' },
+          ],
+        },
+        {
           label: 'Guides',
           translations: { fr: 'Guides' },
           items: [

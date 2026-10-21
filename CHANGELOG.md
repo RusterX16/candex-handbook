@@ -3,6 +3,15 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.4.0] — 2026-10-21
+
+### Added
+- **Architecture & Overview** handbook (EN + FR): the domain model (ER diagram),
+  the API's layered structure, the Firebase authentication flow (sequence
+  diagram), data & Flyway migrations, the front-ends, deployment topology, and
+  grounded design notes (with "to confirm" items).
+- A new **Architecture** section in the navigation.
+
 ## [0.3.0] — 2026-10-21
 
 ### Added

@@ -117,7 +117,7 @@ Candex runs as three apps — the mobile app and the dashboard (Ionic/Angular, r
 ## Where to go next
 
 - Set up your machine → [Local Installation](/en/local-installation/)
-- Understand how the pieces fit, and why → Architecture & Overview *(planned)*
+- Understand how the pieces fit, and why → [Architecture & Overview](/en/architecture/)
 - The precise domain language → Glossary / Domain *(planned)*
 
 **Your first step:** clone the repositories, then follow [Local Installation](/en/local-installation/) to get the API and at least one front-end running against a local database.
