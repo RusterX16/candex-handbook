@@ -3,6 +3,16 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.8.0] — 2026-10-21
+
+### Added
+- **API / Contracts** handbook (EN + FR): the contract conventions (envelope,
+  status codes, headers, authentication, access model), per-resource endpoint
+  tables (~45 endpoints), the bulk-import flow, and Swagger as the live reference.
+
+### Changed
+- Linked API / Contracts from the Back-end handbook.
+
 ## [0.7.0] — 2026-10-21
 
 ### Added

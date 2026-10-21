@@ -65,7 +65,7 @@ Resource paths are centralised in `ApiPaths` and exposed under the API base (for
 | App versions · Reports | `/app-versions` · `/reports` |
 | Admin SQL console | `/admin/...` |
 
-Interactive docs live at **Swagger UI** (`/swagger-ui.html`). The exact request/response contracts belong to the **API / Contracts** handbook *(planned)*.
+Interactive docs live at **Swagger UI** (`/swagger-ui.html`). The exact request/response contracts belong to the **[API / Contracts](/en/api-contracts/)** handbook.
 
 ## Authorization
 

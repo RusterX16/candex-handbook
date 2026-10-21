@@ -65,7 +65,7 @@ Les chemins des ressources sont centralisés dans `ApiPaths` et exposés sous la
 | App versions · Reports | `/app-versions` · `/reports` |
 | Console SQL admin | `/admin/...` |
 
-La doc interactive est sur **Swagger UI** (`/swagger-ui.html`). Les contrats exacts requête/réponse relèvent du handbook **API / Contrats** *(à venir)*.
+La doc interactive est sur **Swagger UI** (`/swagger-ui.html`). Les contrats exacts requête/réponse relèvent du handbook **[API / Contrats](/fr/api-contracts/)**.
 
 ## Autorisation
 
