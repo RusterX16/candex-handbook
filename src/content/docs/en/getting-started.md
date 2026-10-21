@@ -15,16 +15,15 @@ Candex is built around a few kinds of people:
 
 - **Explorers** — who want to discover local, rare, or popular drinks from elsewhere.
 - **Collectors** — who want to complete their World Dex and chase what they are missing.
-- **Friends** — who want to share a find and compare collections.
+- **Sharers** — who love to show off a good find.
 
-What you can do in the app today:
+What you can do in the app:
 
-- Create and manage an account
-- Browse the drink catalogue
-- Unlock drinks you have collected
-- Track your collection progress
-- Manage your profile
-- Sync your data with the Candex backend
+- **Discover** drinks from around the world
+- **Unlock** the ones you have tried or own
+- **Watch your World Dex fill up** as your collection grows
+- **Browse** by brand, series, and flavour
+- **Make it yours** with a personal profile
 
 ## How it works
 
@@ -44,8 +43,9 @@ A few words show up throughout Candex and the rest of this documentation. Here t
 |------|---------------|
 | Drink | A beverage in the catalogue — the thing you collect. |
 | Can | A physical can or packaging of a drink (a drink can have several). |
-| Brand / Series | The maker of a drink and the line it belongs to. |
-| Flavour | A drink's flavour (translated per language). |
+| Brand | The company that makes a drink (for example Monster or Coca-Cola). |
+| Series | A line or range within a brand (for example Monster Ultra). |
+| Flavour | A drink's flavour, translated per language. |
 | World Dex | Your global collection catalogue — what you are filling in. |
 | Unlock | Marking a drink as collected, so it counts toward your Dex. |
 
@@ -87,66 +87,48 @@ The **Architecture & Overview** handbook (planned) goes into how these fit toget
 
 ## Tech stack
 
-**Mobile app & dashboard**
+**Front-end** — the mobile app and the admin dashboard
 
 <div class="tech-grid">
   <a class="tech-card" href="https://angular.dev" target="_blank" rel="noopener"><img src="/logos/angular.svg" alt="Angular" /><span class="tc-name">Angular<span class="tc-note">v20</span></span></a>
   <a class="tech-card" href="https://ionicframework.com" target="_blank" rel="noopener"><img src="/logos/ionic.svg" alt="Ionic" /><span class="tc-name">Ionic<span class="tc-note">v8</span></span></a>
   <a class="tech-card" href="https://capacitorjs.com" target="_blank" rel="noopener"><img src="/logos/capacitor.svg" alt="Capacitor" /><span class="tc-name">Capacitor<span class="tc-note">v7</span></span></a>
   <a class="tech-card" href="https://www.typescriptlang.org" target="_blank" rel="noopener"><img src="/logos/typescript.svg" alt="TypeScript" /><span class="tc-name">TypeScript</span></a>
-  <a class="tech-card" href="https://ngrx.io" target="_blank" rel="noopener"><span class="tc-mono">Ng</span><span class="tc-name">NgRx<span class="tc-note">Store + Effects</span></span></a>
+  <a class="tech-card" href="https://ngrx.io" target="_blank" rel="noopener"><span class="tc-mono">Ng</span><span class="tc-name">NgRx<span class="tc-note">Store · Effects · Entity</span></span></a>
   <a class="tech-card" href="https://rxjs.dev" target="_blank" rel="noopener"><img src="/logos/rxjs.svg" alt="RxJS" /><span class="tc-name">RxJS</span></a>
+  <a class="tech-card" href="https://material.angular.io" target="_blank" rel="noopener"><span class="tc-mono">Mat</span><span class="tc-name">Angular Material<span class="tc-note">dashboard</span></span></a>
   <a class="tech-card" href="https://firebase.google.com/products/auth" target="_blank" rel="noopener"><img src="/logos/firebase.svg" alt="Firebase" /><span class="tc-name">Firebase<span class="tc-note">Auth</span></span></a>
 </div>
 
-**API**
+**Back-end** — the REST API
 
 <div class="tech-grid">
   <a class="tech-card" href="https://spring.io/projects/spring-boot" target="_blank" rel="noopener"><img src="/logos/spring.svg" alt="Spring Boot" /><span class="tc-name">Spring Boot<span class="tc-note">v3.5</span></span></a>
   <a class="tech-card" href="https://openjdk.org" target="_blank" rel="noopener"><img src="/logos/java.svg" alt="Java" /><span class="tc-name">Java<span class="tc-note">21</span></span></a>
+  <a class="tech-card" href="https://maven.apache.org" target="_blank" rel="noopener"><span class="tc-mono">Mvn</span><span class="tc-name">Maven<span class="tc-note">build (wrapper)</span></span></a>
   <a class="tech-card" href="https://www.postgresql.org" target="_blank" rel="noopener"><img src="/logos/postgresql.svg" alt="PostgreSQL" /><span class="tc-name">PostgreSQL</span></a>
   <a class="tech-card" href="https://www.red-gate.com/products/flyway/" target="_blank" rel="noopener"><span class="tc-mono">Fw</span><span class="tc-name">Flyway<span class="tc-note">migrations</span></span></a>
+  <a class="tech-card" href="https://mapstruct.org" target="_blank" rel="noopener"><span class="tc-mono">Ms</span><span class="tc-name">MapStruct<span class="tc-note">mapping</span></span></a>
+  <a class="tech-card" href="https://spring.io/projects/spring-security" target="_blank" rel="noopener"><span class="tc-mono">OA2</span><span class="tc-name">Spring Security<span class="tc-note">OAuth2</span></span></a>
   <a class="tech-card" href="https://swagger.io" target="_blank" rel="noopener"><img src="/logos/swagger.svg" alt="OpenAPI" /><span class="tc-name">OpenAPI<span class="tc-note">springdoc</span></span></a>
 </div>
 
-**Tooling & quality**
+**Quality & delivery**
 
 <div class="tech-grid">
   <a class="tech-card" href="https://www.docker.com" target="_blank" rel="noopener"><img src="/logos/docker.svg" alt="Docker" /><span class="tc-name">Docker<span class="tc-note">Compose</span></span></a>
-  <a class="tech-card" href="https://maven.apache.org" target="_blank" rel="noopener"><span class="tc-mono">Mvn</span><span class="tc-name">Maven<span class="tc-note">wrapper</span></span></a>
+  <a class="tech-card" href="https://junit.org" target="_blank" rel="noopener"><span class="tc-mono">JU</span><span class="tc-name">JUnit<span class="tc-note">+ Mockito</span></span></a>
+  <a class="tech-card" href="https://testcontainers.com" target="_blank" rel="noopener"><span class="tc-mono">Tc</span><span class="tc-name">Testcontainers</span></a>
+  <a class="tech-card" href="https://www.jacoco.org/jacoco/" target="_blank" rel="noopener"><span class="tc-mono">Jc</span><span class="tc-name">JaCoCo<span class="tc-note">coverage</span></span></a>
   <a class="tech-card" href="https://eslint.org" target="_blank" rel="noopener"><img src="/logos/eslint.svg" alt="ESLint" /><span class="tc-name">ESLint</span></a>
   <a class="tech-card" href="https://www.cypress.io" target="_blank" rel="noopener"><img src="/logos/cypress.svg" alt="Cypress" /><span class="tc-name">Cypress<span class="tc-note">e2e</span></span></a>
 </div>
 
-## Run it locally
+## Running Candex locally
 
-Each app runs in three environments: **local**, **dev**, and **prod**. Prerequisites: Node.js 20+ and npm 10+ for the two front-ends; JDK 21 and a PostgreSQL instance for the API.
+Candex runs as three apps: the **mobile app** and the **dashboard** (both Ionic/Angular, run with npm) and the **API** (Maven + Spring Boot, with a PostgreSQL database). Each runs in three environments — local, dev, and prod.
 
-**Mobile app** (`candex-app`) — dev server on port 8100:
-
-```bash
-cd candex-app
-npm install
-npm run start:local    # or: start:dev / start:prod
-```
-
-**Admin dashboard** (`candex-dashboard`) — dev server on port 8101:
-
-```bash
-cd candex-dashboard
-npm install
-npm start               # local; use build:dev / build:prod for other environments
-```
-
-**API** (`candex-api`) — serves on port 8080, with Swagger UI at `/swagger-ui.html`:
-
-```bash
-cd candex-api
-./mvnw clean install
-./run-dev.sh            # or: ./run-prod.sh
-```
-
-`run-dev.sh` / `run-prod.sh` load `.env` and start the matching Spring profile. The API also ships Docker Compose files per environment (`compose.local.yaml`, `compose.dev.yaml`, `compose.prod.yaml`). The full environment setup — variables, profiles, database provisioning — is covered by the **Back-end** and **Deployment** handbooks.
+Setting it up end to end — prerequisites, cloning, environment files, the database, and the per-app, per-environment commands — is a guide in its own right. It lives in the **Local Installation** handbook (planned), so this page does not duplicate it.
 
 ## Where to go next
 
@@ -158,6 +140,6 @@ The documentation is a set of focused handbooks. English is the canonical langua
 
 **Planned**
 
-- Architecture & Overview · Glossary / Domain · Product · UI/UX (+ Design System) · Front-end · Back-end · API / Contracts · Database / Model · Software Quality · Testing · Deployment · Backups · Security
+- Architecture & Overview · Glossary / Domain · Product · UI/UX (+ Design System) · Front-end · Back-end · API / Contracts · Database / Model · Local Installation · Software Quality · Testing · Deployment · Backups · Security
 
 Planned handbooks are listed so you can see the full scope; they are linked here as each one is written.
