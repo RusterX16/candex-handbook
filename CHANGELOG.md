@@ -16,7 +16,5 @@ First version of the documentation ecosystem — the pilot.
   and where to go next.
 - Client-side, theme-aware Mermaid rendering.
 - Per-handbook PDF export (`npm run pdf`) with an intentional print style.
-- Versioned PDF snapshots under `releases/`.
-
-### Notes
-- French Getting Started translation is pending.
+- French translation of the Getting Started handbook.
+- Versioned PDF snapshots under `releases/` (EN + FR).
