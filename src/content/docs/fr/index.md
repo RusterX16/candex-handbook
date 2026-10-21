@@ -5,7 +5,11 @@ template: splash
 hero:
   tagline: L'écosystème de documentation de Candex — produit, domaine et ingénierie.
   actions:
-    - text: Prise en main
+    - text: Comprendre le produit
       link: /fr/getting-started/
       icon: right-arrow
+    - text: Pour les développeurs
+      link: /fr/getting-started-dev/
+      icon: right-arrow
+      variant: minimal
 ---

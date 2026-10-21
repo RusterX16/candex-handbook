@@ -24,7 +24,7 @@ const OUT_PUBLIC = path.join(__dirname, '..', 'public', 'pdf');
 const PORT = 8099;
 
 // Handbook routes to export. Add one line per handbook/locale.
-const ROUTES = ['/en/getting-started/', '/fr/getting-started/'];
+const ROUTES = ['/en/getting-started/', '/fr/getting-started/', '/en/getting-started-dev/', '/fr/getting-started-dev/'];
 
 const fileFor = (route) => {
   const parts = route.split('/').filter(Boolean); // ['en','getting-started']

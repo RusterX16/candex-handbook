@@ -20,10 +20,11 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: 'Start here',
-          translations: { fr: 'Démarrer' },
+          label: 'Getting Started',
+          translations: { fr: 'Prise en main' },
           items: [
-            { label: 'Getting Started', translations: { fr: 'Prise en main' }, slug: 'getting-started' },
+            { label: 'Product', translations: { fr: 'Produit' }, slug: 'getting-started' },
+            { label: 'For developers', translations: { fr: 'Pour les développeurs' }, slug: 'getting-started-dev' },
           ],
         },
       ],

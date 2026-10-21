@@ -1,7 +1,7 @@
 {
   "name": "candex-handbook",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Candex documentation ecosystem — handbooks for the product, domain, and engineering.",
   "scripts": {
