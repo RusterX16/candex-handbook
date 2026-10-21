@@ -27,6 +27,13 @@ export default defineConfig({
             { label: 'For developers', translations: { fr: 'Pour les développeurs' }, slug: 'getting-started-dev' },
           ],
         },
+        {
+          label: 'Guides',
+          translations: { fr: 'Guides' },
+          items: [
+            { label: 'Local Installation', translations: { fr: 'Installation locale' }, slug: 'local-installation' },
+          ],
+        },
       ],
     }),
   ],

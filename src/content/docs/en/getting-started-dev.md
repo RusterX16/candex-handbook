@@ -112,12 +112,12 @@ The codebase is the source of truth: when documentation and code disagree, the c
 
 ## Running it locally
 
-Candex runs as three apps — the mobile app and the dashboard (Ionic/Angular, run with npm) and the API (Maven + Spring Boot, with PostgreSQL), each in three environments (local, dev, prod). The full setup — prerequisites, cloning, environment files, the database, and the per-app commands — lives in the **Local Installation** handbook *(planned)*.
+Candex runs as three apps — the mobile app and the dashboard (Ionic/Angular, run with npm) and the API (Maven + Spring Boot, with PostgreSQL), each in three environments (local, dev, prod). The full setup — prerequisites, cloning, environment files, the database, and the per-app commands — lives in the **[Local Installation](/en/local-installation/)** handbook.
 
 ## Where to go next
 
-- Set up your machine → Local Installation *(planned)*
+- Set up your machine → [Local Installation](/en/local-installation/)
 - Understand how the pieces fit, and why → Architecture & Overview *(planned)*
 - The precise domain language → Glossary / Domain *(planned)*
 
-**Your first step:** clone the repositories, then follow Local Installation to get the API and at least one front-end running against a local database.
+**Your first step:** clone the repositories, then follow [Local Installation](/en/local-installation/) to get the API and at least one front-end running against a local database.

@@ -3,6 +3,21 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.3.0] — 2026-10-21
+
+### Added
+- **Local Installation** handbook (EN + FR): run the API with a local PostgreSQL
+  (built from scratch by Flyway), the mobile app, and the admin dashboard —
+  with ports, prerequisites, env files, a secret-free Firebase section, and
+  troubleshooting.
+- `.env.example` templates for `candex-api`, `candex-app`, and `candex-dashboard`
+  (placeholders only).
+- A new **Guides** section in the navigation.
+
+### Changed
+- Added a "curious" audience to the Understanding Candex handbook.
+- Linked Local Installation from the developer handbook.
+
 ## [0.2.1] — 2026-10-21
 
 ### Changed

@@ -112,12 +112,12 @@ Le code est la source de vérité : quand la documentation et le code divergent,
 
 ## L'installer en local
 
-Candex tourne sous forme de trois applications — l'application mobile et le tableau de bord (Ionic/Angular, lancés avec npm) et l'API (Maven + Spring Boot, avec PostgreSQL), chacune dans trois environnements (local, dev, prod). L'installation complète — prérequis, clonage, fichiers d'environnement, base de données, et les commandes par application — vit dans le handbook **Local Installation** (à venir).
+Candex tourne sous forme de trois applications — l'application mobile et le tableau de bord (Ionic/Angular, lancés avec npm) et l'API (Maven + Spring Boot, avec PostgreSQL), chacune dans trois environnements (local, dev, prod). L'installation complète — prérequis, clonage, fichiers d'environnement, base de données, et les commandes par application — vit dans le handbook **[Local Installation](/fr/local-installation/)**.
 
 ## Où aller ensuite
 
-- Configurer votre machine → Local Installation *(à venir)*
+- Configurer votre machine → [Local Installation](/fr/local-installation/)
 - Comprendre l'assemblage et le pourquoi → Architecture & Vue d'ensemble *(à venir)*
 - Le langage précis du domaine → Glossaire / Domaine *(à venir)*
 
-**Votre première étape :** clonez les dépôts, puis suivez Local Installation pour lancer l'API et au moins un front contre une base locale.
+**Votre première étape :** clonez les dépôts, puis suivez [Local Installation](/fr/local-installation/) pour lancer l'API et au moins un front contre une base locale.
