@@ -3,6 +3,19 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.5.0] — 2026-10-21
+
+### Added
+- **Database & Model** handbook (EN + FR): schema organisation, the full entity
+  ER diagram, reference & seed data, the Flyway migration strategy, World Dex
+  ordering (routines & triggers), and the read-only SQL console role.
+
+### Changed
+- Linked the Database handbook from the Architecture domain section.
+
+### Fixed
+- Pre-bundle Mermaid in Vite (`optimizeDeps`) so diagrams render in `npm run dev`.
+
 ## [0.4.0] — 2026-10-21
 
 ### Added

@@ -22,7 +22,7 @@ erDiagram
   DRINK ||--o{ UNLOCKED_DRINK : "unlocked as"
 ```
 
-Around this core sit supporting entities — `Flavor` (with categories and translations), `Color`, `Language`, `DrinkLocalization`, and `WorldDexArrival` / `WorldDexHistory` for ordering. Catalogue entities (`Brand`, `Series`, `Flavor`, `CanFormat`) carry an **`introduced_in_version`** link to `AppVersion`, so the catalogue is versioned alongside the app. The full entity model belongs to the **Database** handbook *(planned)*.
+Around this core sit supporting entities — `Flavor` (with categories and translations), `Color`, `Language`, `DrinkLocalization`, and `WorldDexArrival` / `WorldDexHistory` for ordering. Catalogue entities (`Brand`, `Series`, `Flavor`, `CanFormat`) carry an **`introduced_in_version`** link to `AppVersion`, so the catalogue is versioned alongside the app. The full entity model is in the **[Database & Model](/en/database/)** handbook.
 
 ## API structure
 

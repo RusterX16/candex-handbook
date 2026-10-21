@@ -33,6 +33,7 @@ export default defineConfig({
           translations: { fr: 'Architecture' },
           items: [
             { label: 'Overview', translations: { fr: 'Vue d\'ensemble' }, slug: 'architecture' },
+            { label: 'Database & Model', translations: { fr: 'Base de données & Modèle' }, slug: 'database' },
           ],
         },
         {
