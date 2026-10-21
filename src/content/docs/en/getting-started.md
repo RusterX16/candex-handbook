@@ -57,6 +57,7 @@ Some older product notes mention ideas like *intake* or *wishlist*. These are no
 
 - **Explorers** — who want to discover local, rare, or popular drinks from elsewhere.
 - **Collectors** — who want to complete their World Dex and chase what they are missing.
+- **The curious** — who just want a little extra info about a drink in their hand.
 
 ## Where to go next
 

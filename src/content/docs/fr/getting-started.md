@@ -57,6 +57,7 @@ D'anciennes notes produit mentionnent des idées comme *intake* ou *wishlist*. E
 
 - **Explorateurs** — qui veulent découvrir des boissons locales, rares ou populaires ailleurs.
 - **Collectionneurs** — qui veulent compléter leur World Dex et traquer ce qui leur manque.
+- **Les curieux** — qui veulent juste un peu d'info en plus sur une boisson qu'ils ont en main.
 
 ## Où aller ensuite
 
