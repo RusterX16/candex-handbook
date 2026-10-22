@@ -3,6 +3,16 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.13.0] — 2026-10-22
+
+### Added
+- **Security** handbook (EN + FR): the API's two authentication mechanisms
+  (Firebase ID tokens → `ROLE_USER`, and an interim in-memory Basic Auth for the
+  admin), the stateless / CSRF-off / CORS setup, the two authorization layers
+  (thin HTTP rules plus `@PreAuthorize` method security with `SecurityExpressions`
+  and `@securityAccess` ownership checks), and how secrets stay out of the repos.
+- New **Security** entry in the Architecture sidebar group.
+
 ## [0.12.0] — 2026-10-22
 
 ### Added

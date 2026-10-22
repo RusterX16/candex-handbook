@@ -37,6 +37,7 @@ export default defineConfig({
             { label: 'Back-end', translations: { fr: 'Back-end' }, slug: 'back-end' },
             { label: 'Front-end', translations: { fr: 'Front-end' }, slug: 'front-end' },
             { label: 'API & Contracts', translations: { fr: 'API & Contrats' }, slug: 'api-contracts' },
+            { label: 'Security', translations: { fr: 'Sécurité' }, slug: 'security' },
           ],
         },
         {
