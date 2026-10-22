@@ -24,6 +24,7 @@ export default defineConfig({
           label: 'Getting Started',
           translations: { fr: 'Prise en main' },
           items: [
+            { label: 'Product', translations: { fr: 'Produit' }, slug: 'product' },
             { label: 'Understanding Candex', translations: { fr: 'Comprendre Candex' }, slug: 'getting-started' },
             { label: 'For developers', translations: { fr: 'Pour les développeurs' }, slug: 'getting-started-dev' },
           ],

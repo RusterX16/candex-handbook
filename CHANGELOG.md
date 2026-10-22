@@ -3,6 +3,15 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.17.0] — 2026-10-22
+
+### Added
+- **Product** handbook (EN + FR): the pitch, the audience, a status-tagged feature
+  set (Live / In progress / Planned / Exploring), the near-term roadmap, and the
+  product principles — grounded in the product notes, with forward-looking items
+  clearly marked as not yet shipped.
+- **Product** entry added at the top of the Getting Started sidebar group.
+
 ## [0.16.0] — 2026-10-22
 
 ### Changed
