@@ -43,3 +43,17 @@ check out its tag and run `npm run dev`, or open its PDF under `releases/`.
 - `src/components/Head.astro` — client-side Mermaid rendering
 - `scripts/export-pdf.mjs` — PDF export
 - `public/logos` — tech-stack logos
+
+## Releasing
+
+Each release is historised: the PDFs are snapshotted under `releases/v<version>/`, the
+`CHANGELOG.md` records what changed, and a `v<version>` tag is created.
+
+```bash
+# 1. write the notes for the new version under a "## [x.y.z]" heading in CHANGELOG.md
+# 2. cut the release (build + export PDFs + snapshot + commit + tag):
+npm run release -- 0.19.0
+```
+
+Options: `--skip-build` reuses the current build/PDFs, `--no-git` skips the commit/tag.
+The script never pushes — publish yourself with `git push && git push --tags`.

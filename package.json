@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "pdf": "node scripts/export-pdf.mjs"
+    "pdf": "node scripts/export-pdf.mjs",
+    "release": "node scripts/release.mjs"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.42.6",

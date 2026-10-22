@@ -3,6 +3,15 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.19.0] — 2026-10-22
+
+### Added
+- **Release script** (`scripts/release.mjs`, `npm run release -- <version>`):
+  automates the historisation ritual — checks the CHANGELOG entry, builds,
+  exports the PDFs, snapshots them under `releases/v<version>/`, and creates the
+  commit and tag (never pushes).
+- A **Releasing** section in the README.
+
 ## [0.18.0] — 2026-10-22
 
 ### Added
