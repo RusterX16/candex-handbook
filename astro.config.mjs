@@ -57,6 +57,7 @@ export default defineConfig({
             { label: 'Local Installation', translations: { fr: 'Installation locale' }, slug: 'local-installation' },
             { label: 'Deployment', translations: { fr: 'Déploiement' }, slug: 'deployment' },
             { label: 'Backups', translations: { fr: 'Sauvegardes' }, slug: 'backups' },
+            { label: 'Releasing', translations: { fr: 'Releases' }, slug: 'releasing' },
           ],
         },
         {

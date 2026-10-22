@@ -40,6 +40,7 @@ hero:
   <a class="hb-card" href="/en/backups/"><span class="t">Backups</span><span class="d">The production PostgreSQL backup strategy.</span></a>
   <a class="hb-card" href="/en/testing/"><span class="t">Testing</span><span class="d">Test strategy, the coverage gate, and CI quality gates.</span></a>
   <a class="hb-card" href="/en/software-quality/"><span class="t">Software Quality</span><span class="d">Checkstyle, ESLint/Prettier, DeepSource, Qodana.</span></a>
+  <a class="hb-card" href="/en/releasing/"><span class="t">Releasing</span><span class="d">How the handbook is versioned, snapshotted, and tagged.</span></a>
 </div>
 <p class="hb-group-title">Reference</p>
 

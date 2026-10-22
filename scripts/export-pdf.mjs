@@ -24,7 +24,7 @@ const OUT_PUBLIC = path.join(__dirname, '..', 'public', 'pdf');
 const PORT = 8099;
 
 // Handbook routes to export. Add one line per handbook/locale.
-const ROUTES = ['/en/getting-started/', '/fr/getting-started/', '/en/getting-started-dev/', '/fr/getting-started-dev/', '/en/local-installation/', '/fr/local-installation/', '/en/architecture/', '/fr/architecture/', '/en/database/', '/fr/database/', '/en/back-end/', '/fr/back-end/', '/en/front-end/', '/fr/front-end/', '/en/api-contracts/', '/fr/api-contracts/', '/en/deployment/', '/fr/deployment/', '/en/backups/', '/fr/backups/', '/en/testing/', '/fr/testing/', '/en/software-quality/', '/fr/software-quality/', '/en/security/', '/fr/security/', '/en/ui-ux/', '/fr/ui-ux/', '/en/glossary/', '/fr/glossary/', '/en/product/', '/fr/product/'];
+const ROUTES = ['/en/getting-started/', '/fr/getting-started/', '/en/getting-started-dev/', '/fr/getting-started-dev/', '/en/local-installation/', '/fr/local-installation/', '/en/architecture/', '/fr/architecture/', '/en/database/', '/fr/database/', '/en/back-end/', '/fr/back-end/', '/en/front-end/', '/fr/front-end/', '/en/api-contracts/', '/fr/api-contracts/', '/en/deployment/', '/fr/deployment/', '/en/backups/', '/fr/backups/', '/en/testing/', '/fr/testing/', '/en/software-quality/', '/fr/software-quality/', '/en/security/', '/fr/security/', '/en/ui-ux/', '/fr/ui-ux/', '/en/releasing/', '/fr/releasing/', '/en/glossary/', '/fr/glossary/', '/en/product/', '/fr/product/'];
 
 const fileFor = (route) => {
   const parts = route.split('/').filter(Boolean); // ['en','getting-started']
@@ -40,7 +40,7 @@ await mkdir(OUT_DIST, { recursive: true });
 await mkdir(OUT_PUBLIC, { recursive: true });
 
 const AUTHOR = 'Eliott Barbet';
-const ORDER = ['product','getting-started','getting-started-dev','local-installation','architecture','database','back-end','front-end','api-contracts','ui-ux','security','deployment','backups','testing','software-quality','glossary'];
+const ORDER = ['product','getting-started','getting-started-dev','local-installation','architecture','database','back-end','front-end','api-contracts','ui-ux','security','deployment','backups','testing','software-quality','releasing','glossary'];
 const headerTpl = (title) => `<div style="font-size:7px;color:#b3b8bd;width:100%;padding:3px 12mm 0;text-align:right;font-family:Arial,sans-serif;">${title}</div>`;
 const footerTpl = () => `<div style="font-size:7.5px;color:#9aa0a6;width:100%;padding:0 12mm 3px;display:flex;justify-content:space-between;font-family:Arial,sans-serif;"><span>Candex Handbook \u00b7 ${AUTHOR}</span><span>Page <span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`;
 

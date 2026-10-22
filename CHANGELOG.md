@@ -3,6 +3,14 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.21.0] — 2026-10-22
+
+### Added
+- **Releasing** handbook (EN + FR): the historisation model (git tag + CHANGELOG
+  entry + PDF snapshot), how to cut a release with `npm run release`, the PDF
+  export, and how to revisit any past version. Added to the Guides sidebar group
+  and the home hub.
+
 ## [0.20.0] — 2026-10-22
 
 ### Added
