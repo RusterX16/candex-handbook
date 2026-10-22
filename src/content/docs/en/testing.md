@@ -57,5 +57,5 @@ And across the stack:
 
 ## Where to go next
 
-- Code style, reviews, conventions → **Software Quality** *(planned)*
+- Code style, conventions, static analysis → [Software Quality](/en/software-quality/)
 - The API → [Back-end](/en/back-end/) · The front-ends → [Front-end](/en/front-end/)

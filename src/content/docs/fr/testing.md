@@ -57,5 +57,5 @@ Et sur toute la stack :
 
 ## Pour aller plus loin
 
-- Style de code, revues, conventions → **Qualité logicielle** *(à venir)*
+- Style de code, conventions, analyse statique → [Qualité logicielle](/fr/software-quality/)
 - L'API → [Back-end](/fr/back-end/) · Les front-ends → [Front-end](/fr/front-end/)

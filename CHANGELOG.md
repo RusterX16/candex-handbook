@@ -3,6 +3,22 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.12.0] — 2026-10-22
+
+### Added
+- **Software Quality** handbook (EN + FR): the API's custom Checkstyle config
+  (120-col lines, naming, imports, and complexity caps — method length 60,
+  params 7, cyclomatic 10, NPath 200), its suppressions, the front-ends' ESLint 9
+  + Prettier + `.editorconfig`, and JetBrains Qodana (active on the API, disabled
+  on the app, absent on the dashboard).
+- **DeepSource** continuous analysis across all three repositories (Java analyzer
+  on the API with fixture-aware `test_patterns`, JavaScript + Angular analyzer on
+  the app and dashboard).
+- New **Software Quality** entry in the Quality sidebar group.
+
+### Changed
+- Linked Software Quality ↔ Testing (replaced the “planned” placeholder).
+
 ## [0.11.0] — 2026-10-21
 
 ### Added

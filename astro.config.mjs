@@ -43,6 +43,7 @@ export default defineConfig({
           label: 'Quality',
           translations: { fr: 'Qualité' },
           items: [
+            { label: 'Software Quality', translations: { fr: 'Qualité logicielle' }, slug: 'software-quality' },
             { label: 'Testing', translations: { fr: 'Tests' }, slug: 'testing' },
           ],
         },
