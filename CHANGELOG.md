@@ -3,6 +3,16 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.16.0] — 2026-10-22
+
+### Changed
+- **UI / UX**: reordered the colour swatches (primary, secondary, tertiary,
+  success, warning, danger), fixed their alignment, and gave them clean labels.
+
+### Added
+- **UI / UX**: a **Typography** section — Rubik with its three loaded weights
+  (Regular 400, Medium 500, Bold 700) and the Ionic-based text sizing.
+
 ## [0.15.0] — 2026-10-22
 
 ### Added

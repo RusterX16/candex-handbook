@@ -10,15 +10,21 @@ L'interface de Candex est une app mobile **Ionic 8 + Angular 20**. Ce handbook c
 Les couleurs, la typographie et les surfaces sont définies une seule fois sous forme de **variables CSS Ionic** et réutilisées partout, pour que la marque reste constante sur chaque écran.
 
 <div class="swatch-grid">
-  <div class="swatch"><span class="sw" style="background:#00B1FF"></span><code>primary</code><b>#00B1FF</b><small>Bleu Candex — actions principales, accents</small></div>
-  <div class="swatch"><span class="sw" style="background:#033C44"></span><code>tertiary</code><b>#033C44</b><small>Teal profond — emphase secondaire</small></div>
-  <div class="swatch"><span class="sw" style="background:#2dd36f"></span><code>success</code><b>#2dd36f</b><small>État succès</small></div>
-  <div class="swatch"><span class="sw" style="background:#ffc409"></span><code>warning</code><b>#ffc409</b><small>État avertissement</small></div>
-  <div class="swatch"><span class="sw" style="background:#eb445a"></span><code>danger</code><b>#eb445a</b><small>État danger / erreur</small></div>
-  <div class="swatch"><span class="sw" style="background:#ffffff"></span><code>secondary</code><b>#ffffff</b><small>Blanc</small></div>
+  <div class="swatch"><span class="sw" style="background:#00B1FF"></span><span class="tok">primary</span><span class="hex">#00B1FF</span><span class="role">Bleu Candex — actions principales, accents</span></div>
+  <div class="swatch"><span class="sw" style="background:#ffffff"></span><span class="tok">secondary</span><span class="hex">#ffffff</span><span class="role">Blanc</span></div>
+  <div class="swatch"><span class="sw" style="background:#033C44"></span><span class="tok">tertiary</span><span class="hex">#033C44</span><span class="role">Teal profond — emphase secondaire</span></div>
+  <div class="swatch"><span class="sw" style="background:#2dd36f"></span><span class="tok">success</span><span class="hex">#2dd36f</span><span class="role">État succès</span></div>
+  <div class="swatch"><span class="sw" style="background:#ffc409"></span><span class="tok">warning</span><span class="hex">#ffc409</span><span class="role">État avertissement</span></div>
+  <div class="swatch"><span class="sw" style="background:#eb445a"></span><span class="tok">danger</span><span class="hex">#eb445a</span><span class="role">État danger / erreur</span></div>
 </div>
 
 Chaque couleur est livrée avec ses variantes `-shade`, `-tint` et `-contrast`, pour que le texte respecte toujours son fond. La typographie est **Rubik**, auto-hébergée depuis `assets/fonts` (Regular, Medium, Bold et le reste de la famille) et branchée via `--ion-font-family`, donc l'app s'affiche identiquement hors-ligne et sur toutes les plateformes.
+
+## Typographie
+
+La police de l'app est **Rubik**, auto-hébergée depuis `assets/fonts` et définie via `--ion-font-family`. Trois graisses sont chargées et portent toute la hiérarchie : **Regular (400)** pour le corps de texte, **Medium (500)** pour l'emphase et les labels, et **Bold (700)** pour les titres et le texte fort.
+
+Les tailles de texte suivent la **typographie intégrée d'Ionic** (l'app importe `typography.css`) plutôt qu'une échelle sur mesure : une base de **16px (1rem)**, les titres décroissant de `<h1>` à `<h6>` sur l'échelle par défaut d'Ionic. En bref, l'app possède la *famille* ; Ionic possède les *tailles* — ce qui garde le texte constant et respecte les réglages d'accessibilité (dynamic type) de la plateforme.
 
 ## Thèmes — Light, Dark, System
 
