@@ -3,6 +3,15 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.15.0] — 2026-10-22
+
+### Added
+- **Glossary** handbook (EN + FR): the domain vocabulary — Dex, Unlock, World Dex
+  and its history; the catalogue terms (Drink, Can, Brand, Series, Category,
+  Flavor, Edition, Predecessor); the per-country localized data (Localization,
+  Composition, Claim); reference data; and User — all grounded in the data model.
+- New **Reference** sidebar group holding the Glossary.
+
 ## [0.14.0] — 2026-10-22
 
 ### Added

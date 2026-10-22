@@ -58,6 +58,13 @@ export default defineConfig({
             { label: 'Backups', translations: { fr: 'Sauvegardes' }, slug: 'backups' },
           ],
         },
+        {
+          label: 'Reference',
+          translations: { fr: 'Référence' },
+          items: [
+            { label: 'Glossary', translations: { fr: 'Glossaire' }, slug: 'glossary' },
+          ],
+        },
       ],
     }),
   ],
