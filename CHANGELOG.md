@@ -3,6 +3,18 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.20.0] — 2026-10-22
+
+### Added
+- **UI / UX**: a **Styling conventions** section — cascade-first SCSS, the fixed
+  spacing scale (2/4/8/16/32; 12 and 24 only as exceptions), global variables for
+  colours/fonts/sizes, no floating CSS outside `.scss`, and strict consistency.
+
+### Fixed
+- **Mermaid dev server**: switched Vite `optimizeDeps` from `include` to
+  `exclude: ['mermaid']` so diagram modules (e.g. `erDiagram`) stop failing to load
+  in `astro dev` after dependency changes. Build and PDF output are unaffected.
+
 ## [0.19.0] — 2026-10-22
 
 ### Added

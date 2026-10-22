@@ -26,6 +26,16 @@ La police de l'app est **Rubik**, auto-hébergée depuis `assets/fonts` et défi
 
 Les tailles de texte suivent la **typographie intégrée d'Ionic** (l'app importe `typography.css`) plutôt qu'une échelle sur mesure : une base de **16px (1rem)**, les titres décroissant de `<h1>` à `<h6>` sur l'échelle par défaut d'Ionic. En bref, l'app possède la *famille* ; Ionic possède les *tailles* — ce qui garde le texte constant et respecte les réglages d'accessibilité (dynamic type) de la plateforme.
 
+## Conventions de style
+
+Les styles sont écrits en SCSS et suivent quelques règles strictes, pour que la base reste uniforme :
+
+- **En cascade, toujours** — les styles sont écrits en SCSS imbriqué qui s'appuie sur la cascade, pas en sélecteurs plats et répétés.
+- **Une échelle d'espacement fixe** — marges, paddings, gaps et décalages n'utilisent que **2, 4, 8, 16, 32** px. `12` et `24` sont autorisés, mais uniquement dans des cas rares et précis.
+- **Des variables globales pour les valeurs partagées** — couleurs, polices et tailles de texte viennent toujours de variables globales (les design tokens), jamais de littéraux en dur.
+- **Pas de CSS flottant** — pas de style inline dans les templates et rien de stylé hors d'un fichier `.scss` ; chaque règle vit dans le SCSS.
+- **La consistance avant tout** — la même chose se fait de la même façon partout.
+
 ## Thèmes — Light, Dark, System
 
 L'app propose trois thèmes via un `ThemeService` : **Light**, **Dark** et **System** (qui suit le réglage de l'appareil). Le choix est appliqué en posant un attribut `theme` sur `<body>`, et les blocs de tokens `body[theme=light]` / `body[theme=dark]` échangent la palette en dessous — chaque composant réagit automatiquement puisqu'il lit les mêmes variables.

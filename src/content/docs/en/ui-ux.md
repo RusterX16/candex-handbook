@@ -26,6 +26,16 @@ The app's typeface is **Rubik**, self-hosted from `assets/fonts` and set as `--i
 
 Text sizing follows **Ionic's built-in typography** (the app imports `typography.css`) rather than a bespoke scale: a **16px (1rem)** base, with headings stepping down from `<h1>` to `<h6>` on Ionic's default scale. In short, the app owns the *family*; Ionic owns the *sizes* — which keeps text consistent and respects the platform's accessibility (dynamic type) settings.
 
+## Styling conventions
+
+Styles are written in SCSS and follow a few strict rules, so the codebase stays uniform:
+
+- **Cascade, always** — styles are written as nested SCSS that leans on the cascade, not flat, repeated selectors.
+- **A fixed spacing scale** — margins, paddings, gaps, and offsets use only **2, 4, 8, 16, 32** px. `12` and `24` are allowed, but only in rare, specific cases.
+- **Global variables for shared values** — colours, fonts, and text sizes always come from global variables (the design tokens), never hard-coded literals.
+- **No floating CSS** — no inline styles in templates and nothing styled outside a `.scss` file; every rule lives in SCSS.
+- **Consistency above all** — the same thing is done the same way everywhere.
+
 ## Theming — Light, Dark, System
 
 The app offers three themes through a `ThemeService`: **Light**, **Dark**, and **System** (which follows the device setting). The choice is applied by setting a `theme` attribute on `<body>`, and the token blocks `body[theme=light]` / `body[theme=dark]` swap the palette underneath — every component reacts automatically because it reads the same variables.
