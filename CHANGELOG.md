@@ -3,6 +3,25 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.18.0] — 2026-10-22
+
+### Added
+- **Home hub**: the landing page now presents all 16 handbooks as a grouped card
+  grid (Start here / Architecture / Operations & Quality / Reference), with an
+  author line and a one-click link to the full combined PDF.
+- **Diagrams**: an auth sequence diagram (Security), a CI/CD pipeline diagram
+  (Deployment), and a test-setup diagram (Testing).
+- **PDF author & pagination**: every exported PDF now carries a header (document
+  title) and a footer (“Candex Handbook · Eliott Barbet” + “Page X / Y”).
+- **Combined PDF**: a single `candex-handbook-en.pdf` / `candex-handbook-fr.pdf`
+  bundling every handbook in reading order (EN 66 pages, FR 68 pages).
+
+### Changed
+- Added the missing “Where to go next” sections to Architecture, Back-end, and
+  Database for consistent cross-linking.
+- `export-pdf.mjs` now stamps the header/footer and builds the combined PDF
+  (via `pdf-lib`).
+
 ## [0.17.0] — 2026-10-22
 
 ### Added

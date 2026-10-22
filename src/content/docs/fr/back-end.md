@@ -136,3 +136,10 @@ La configuration vit dans `config` et dépend du profil (`dev` / `prod`) : `Open
 - Les entités ne quittent jamais la frontière du service — les DTO (`dto/request`, `dto/response`) la franchissent via les mappers MapStruct.
 - Chaque endpoint déclare son accès avec `@PreAuthorize`.
 - Les erreurs sont des exceptions structurées (`api` / `business`) exposées via l'enveloppe `Result`.
+
+## Pour aller plus loin
+
+- Les données qu'il persiste → [Base de données](/fr/database/)
+- Les endpoints qu'il expose → [API / Contrats](/fr/api-contracts/)
+- Comment il est sécurisé → [Sécurité](/fr/security/)
+- Comment il est testé → [Tests](/fr/testing/)

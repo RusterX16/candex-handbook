@@ -9,7 +9,7 @@
 */
 import { createRequire } from 'node:module';
 import http from 'node:http';
-import { readFile, mkdir, copyFile } from 'node:fs/promises';
+import { readFile, mkdir, copyFile, writeFile } from 'node:fs/promises';
 import { existsSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -39,6 +39,11 @@ if (!existsSync(ROOT)) { console.error('dist/ not found — run `npm run build` 
 await mkdir(OUT_DIST, { recursive: true });
 await mkdir(OUT_PUBLIC, { recursive: true });
 
+const AUTHOR = 'Eliott Barbet';
+const ORDER = ['product','getting-started','getting-started-dev','local-installation','architecture','database','back-end','front-end','api-contracts','ui-ux','security','deployment','backups','testing','software-quality','glossary'];
+const headerTpl = (title) => `<div style="font-size:7px;color:#b3b8bd;width:100%;padding:3px 12mm 0;text-align:right;font-family:Arial,sans-serif;">${title}</div>`;
+const footerTpl = () => `<div style="font-size:7.5px;color:#9aa0a6;width:100%;padding:0 12mm 3px;display:flex;justify-content:space-between;font-family:Arial,sans-serif;"><span>Candex Handbook \u00b7 ${AUTHOR}</span><span>Page <span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`;
+
 const server = http.createServer(async (req, res) => {
   try {
     let fp = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]));
@@ -59,12 +64,37 @@ for (const route of ROUTES) {
   await page.evaluate(() => { document.documentElement.dataset.theme = 'light'; });
   try { await page.waitForSelector('pre.mermaid svg', { timeout: 20000 }); } catch (e) { /* no diagram */ }
   await page.emulateMedia({ media: 'print', colorScheme: 'light' });
+  const h1 = await page.evaluate(() => { const h = document.querySelector('h1'); return h ? h.innerText.trim() : ''; });
+  const headerTitle = h1 ? `${h1} \u2014 Candex Handbook` : 'Candex Handbook';
   const dest = path.join(OUT_DIST, name);
-  await page.pdf({ path: dest, format: 'A4', printBackground: true, margin: { top: '16mm', bottom: '16mm', left: '14mm', right: '14mm' } });
+  await page.pdf({ path: dest, format: 'A4', printBackground: true, displayHeaderFooter: true, headerTemplate: headerTpl(headerTitle), footerTemplate: footerTpl(), margin: { top: '17mm', bottom: '16mm', left: '12mm', right: '12mm' } });
   await copyFile(dest, path.join(OUT_PUBLIC, name));
   console.log('exported', name);
   await page.close();
 }
 await browser.close();
 await new Promise((r) => server.close(r));
+
+// Merge per-handbook PDFs into one combined PDF per language (reading order).
+try {
+  const { PDFDocument } = await import('pdf-lib');
+  for (const lang of ['en', 'fr']) {
+    const merged = await PDFDocument.create();
+    for (const slug of ORDER) {
+      const src = path.join(OUT_DIST, `${slug}-${lang}.pdf`);
+      if (!existsSync(src)) continue;
+      const doc = await PDFDocument.load(await readFile(src));
+      const pages = await merged.copyPages(doc, doc.getPageIndices());
+      pages.forEach((pg) => merged.addPage(pg));
+    }
+    const bytes = await merged.save();
+    const outName = `candex-handbook-${lang}.pdf`;
+    await writeFile(path.join(OUT_DIST, outName), bytes);
+    await writeFile(path.join(OUT_PUBLIC, outName), bytes);
+    console.log('merged', outName);
+  }
+} catch (e) {
+  console.warn('combined PDF skipped (install pdf-lib: npm i -D pdf-lib):', e.message);
+}
+
 console.log('PDF export complete');

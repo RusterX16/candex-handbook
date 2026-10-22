@@ -86,3 +86,9 @@ La migration `V16` provisionne un **rôle de base en lecture seule** pour une in
 - Les tables de jointure et de traduction utilisent des **clés primaires composites**, définies dans `entity/id`.
 - Les migrations sont **versionnées et immuables** ; la base n'est jamais éditée à la main.
 - Les lignes de catalogue et de référence sont rattachées à une `AppVersion` via `introduced_in_version`.
+
+## Pour aller plus loin
+
+- Les couches qui l'utilisent → [Back-end](/fr/back-end/)
+- Les termes derrière les tables → [Glossaire](/fr/glossary/)
+- Comment elle est sauvegardée → [Backups](/fr/backups/)

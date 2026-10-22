@@ -5,6 +5,16 @@ description: Comment Candex est livré — l'API en stack Docker Compose par env
 
 Voici comment Candex est construit, livré et exploité. L'API tourne en stack **Docker Compose** par environnement ; l'app mobile est livrée sur les stores avec **Fastlane**. Pour la lancer sur votre machine, voir [Installation locale](/fr/local-installation/) ; pour le système autour, [Architecture & Vue d'ensemble](/fr/architecture/).
 
+## Le pipeline en un coup d'œil
+
+```mermaid
+flowchart LR
+  push[Push / PR] --> ci[CI\ntests + qualité + build image]
+  ci --> dd[deploy-dev] --> envd[Environnement dev]
+  ci --> dp[deploy-prod] --> envp[Environnement prod]
+  bk[backup-prod\n03:00 UTC] -.-> envp
+```
+
 ## Environnements
 
 Chaque environnement est sa propre stack Compose (un conteneur API + un conteneur PostgreSQL 17) :

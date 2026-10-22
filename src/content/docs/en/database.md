@@ -86,3 +86,9 @@ Migration `V16` provisions a **read-only database role** for safe inspection. It
 - Join and translation tables use **composite primary keys**, defined in `entity/id`.
 - Migrations are **versioned and immutable**; the database is never edited by hand.
 - Catalogue and reference rows are tied to an `AppVersion` via `introduced_in_version`.
+
+## Where to go next
+
+- The layers that use it → [Back-end](/en/back-end/)
+- The terms behind the tables → [Glossary](/en/glossary/)
+- How it's backed up → [Backups](/en/backups/)

@@ -5,6 +5,21 @@ description: How Candex is tested — unit and integration tests on the API, uni
 
 Testing runs across the whole stack and is enforced in CI. For how the code is organised, see [Back-end](/en/back-end/) and [Front-end](/en/front-end/).
 
+## The test setup at a glance
+
+```mermaid
+flowchart TB
+  subgraph api[candex-api]
+    u[Unit\nJUnit + Mockito] --> it[Integration\nTestcontainers + Postgres] --> jc[JaCoCo 100% gate]
+  end
+  subgraph front[candex-app / dashboard]
+    k[Unit\nKarma + Jasmine] --> cy[E2E\nCypress]
+  end
+  jc --> gate{CI green?}
+  cy --> gate
+  gate -->|yes| done[Change is done]
+```
+
 ## Back-end (`candex-api`)
 
 The API has around **90 test classes** on two levels:

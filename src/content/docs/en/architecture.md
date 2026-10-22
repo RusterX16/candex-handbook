@@ -91,3 +91,9 @@ Grounded from the code and config; items marked *to confirm* need your input.
 - **Flyway-owned schema** — the database is never edited by hand; every change is a versioned migration, which also makes local setup reproducible.
 - **Separate admin dashboard** — catalogue management is a distinct app from the consumer mobile app. *(Rationale to confirm.)*
 - **Versioned catalogue** — catalogue entities reference `AppVersion`. *(Intended use to confirm.)*
+
+## Where to go next
+
+- The data model → [Database](/en/database/)
+- The API layers → [Back-end](/en/back-end/)
+- The front-end → [Front-end](/en/front-end/)

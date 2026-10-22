@@ -5,6 +5,22 @@ description: Comment l'API authentifie les appelants et autorise les requêtes �
 
 La sécurité est imposée dans l'**API**. L'authentification décide *qui* appelle ; l'autorisation décide *ce qu'*il peut faire. La couche HTTP reste volontairement fine — elle définit le mécanisme d'authentification et quelques routes publiques — tandis que les vraies règles métier vivent dans la method security, à côté des endpoints qu'elles protègent.
 
+## L'authentification d'une requête en un coup d'œil
+
+```mermaid
+sequenceDiagram
+  participant App as App mobile
+  participant API as Filter chain API
+  participant FB as Firebase
+  participant M as Method security
+  App->>API: Requête + Bearer token ID
+  API->>FB: verifyIdToken(token)
+  FB-->>API: UID (valide) ou erreur
+  API->>API: principal = UID, autorité = ROLE_USER
+  API->>M: contrôle @PreAuthorize / @securityAccess
+  M-->>App: 200 OK / 401 / 403
+```
+
 ## Authentification
 
 Deux mécanismes coexistent.

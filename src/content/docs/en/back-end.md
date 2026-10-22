@@ -136,3 +136,10 @@ Configuration lives in `config` and is profile-aware (`dev` / `prod`): `OpenApiC
 - Entities never leave the service boundary — DTOs (`dto/request`, `dto/response`) cross it via MapStruct mappers.
 - Every endpoint declares its access with `@PreAuthorize`.
 - Errors are structured exceptions (`api` / `business`) surfaced through the `Result` envelope.
+
+## Where to go next
+
+- The data it persists → [Database](/en/database/)
+- The endpoints it exposes → [API / Contracts](/en/api-contracts/)
+- How it's secured → [Security](/en/security/)
+- How it's tested → [Testing](/en/testing/)

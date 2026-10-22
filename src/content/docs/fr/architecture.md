@@ -91,3 +91,9 @@ Groundé depuis le code et la config ; les points marqués *à confirmer* néces
 - **Schéma détenu par Flyway** — la base n'est jamais éditée à la main ; chaque changement est une migration versionnée, ce qui rend aussi l'install locale reproductible.
 - **Tableau de bord séparé** — la gestion du catalogue est une app distincte de l'app mobile grand public. *(Rationale à confirmer.)*
 - **Catalogue versionné** — les entités de catalogue référencent `AppVersion`. *(Usage visé à confirmer.)*
+
+## Pour aller plus loin
+
+- Le modèle de données → [Base de données](/fr/database/)
+- Les couches de l'API → [Back-end](/fr/back-end/)
+- Le front-end → [Front-end](/fr/front-end/)

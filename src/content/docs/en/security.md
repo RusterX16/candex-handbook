@@ -5,6 +5,22 @@ description: How the API authenticates callers and authorizes requests — Fireb
 
 Security is enforced in the **API**. Authentication decides *who* is calling; authorization decides *what* they may do. The HTTP layer stays deliberately thin — it sets the authentication mechanism and a few public routes — while the real business rules live in method security, next to the endpoints they protect.
 
+## Request authentication at a glance
+
+```mermaid
+sequenceDiagram
+  participant App as Mobile app
+  participant API as API filter chain
+  participant FB as Firebase
+  participant M as Method security
+  App->>API: Request + Bearer ID token
+  API->>FB: verifyIdToken(token)
+  FB-->>API: UID (valid) or error
+  API->>API: principal = UID, authority = ROLE_USER
+  API->>M: @PreAuthorize / @securityAccess check
+  M-->>App: 200 OK / 401 / 403
+```
+
 ## Authentication
 
 Two mechanisms coexist.
