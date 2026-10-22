@@ -3,6 +3,15 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.22.0] — 2026-10-22
+
+### Changed
+- **Releasing** handbook rewritten to cover the three projects' real release
+  flows: the mobile app (`npm run release` → tag → GitHub Release → Fastlane to
+  Google Play and the App Store), the API (Maven version + `deploy-dev` /
+  `deploy-prod` on `workflow_run`), and the dashboard — instead of the handbook's
+  own release process.
+
 ## [0.21.0] — 2026-10-22
 
 ### Added

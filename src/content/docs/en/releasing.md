@@ -1,46 +1,41 @@
 ---
 title: "Releasing"
-description: How the handbook is versioned and released — the historisation model, the release script, and how to revisit any past version.
+description: How the three Candex projects are versioned and shipped — the mobile app to the stores, the API via its deploy pipeline, and the admin dashboard.
 ---
 
-The handbook is versioned so any past state can be revisited. Each release keeps three things together: a git tag, a `CHANGELOG.md` entry, and a rendered PDF snapshot.
+Candex is three deployable projects, each versioned and released on its own: the mobile app (`candex-app`), the API (`candex-api`), and the admin dashboard (`candex-dashboard`). For the runtime and infrastructure side, see [Deployment](/en/deployment/).
 
-## The historisation model
+## Mobile app (`candex-app`)
 
-Every reviewed version `vX.Y.Z` has:
-
-- a **git tag** `vX.Y.Z`,
-- a **`CHANGELOG.md`** entry describing what changed,
-- a **PDF snapshot** under `releases/vX.Y.Z/` — every handbook, in English and French, plus the combined PDF.
-
-## Cutting a release
-
-First, write the notes for the new version under a `## [x.y.z]` heading in `CHANGELOG.md`. Then run the release script:
+The app carries one version across web, Android, and iOS. A release is cut with the release script:
 
 ```bash
-npm run release -- 0.21.0
+npm run release 1.2.0
 ```
 
-It checks the CHANGELOG entry (and stops if it is missing), builds the site, exports the PDFs, snapshots them under `releases/v0.21.0/`, and creates the commit and tag.
-
-Options: `--skip-build` reuses the current build and PDFs; `--no-git` does the snapshot without committing. The script **never pushes** — you publish yourself:
+`scripts/release.js` bumps the version everywhere it lives — `package.json`, the Android `build.gradle` (`versionName` and `versionCode`), and the iOS `project.pbxproj` — updates `CHANGELOG.md`, commits the change, and creates an **annotated git tag** whose message is that version's changelog section. If any step fails it rolls back (restores the files, deletes the tag). It then prints the push command:
 
 ```bash
-git push && git push --tags
+git push && git push origin 1.2.0
 ```
 
-## PDF export
+Pushing the tag triggers **`github-release.yml`** ("Create GitHub Release"), which publishes the GitHub Release. Shipping to the stores is a separate, manual step: the **"Deploy to Stores"** workflow (`deploy.yml`, `workflow_dispatch`) takes an already-released tag and, via **Fastlane**, builds and submits **Android → Google Play** (an AAB) and **iOS → App Store** (an IPA to App Store Connect).
 
-`npm run pdf` (`scripts/export-pdf.mjs`) renders every handbook to A4 PDF — forcing the light theme, waiting for Mermaid diagrams to render, and stamping each page with a header (the document title) and a footer (`Candex Handbook · Eliott Barbet` and `Page X / Y`). It then merges them, in reading order, into a single `candex-handbook-en.pdf` and `candex-handbook-fr.pdf` (via `pdf-lib`). PDFs are written to both `dist/pdf` (served by the site) and `public/pdf`.
+*(Current app version: 1.1.4.)*
 
-## Revisiting a past version
+## API (`candex-api`)
 
-Two ways:
+The API is a Maven project; its version lives in `pom.xml` (currently 1.1.10). It is released by deploying its Docker image: the **Deployment Development** (`deploy-dev.yml`) and **Deployment Production** (`deploy-prod.yml`) workflows run automatically after CI completes successfully (`workflow_run`), or manually (`workflow_dispatch`). The image build and the Compose stacks are covered in [Deployment](/en/deployment/).
 
-- **Read the snapshot** — open the PDF under `releases/vX.Y.Z/`.
-- **Run the source** — `git checkout vX.Y.Z`, then `npm run dev`.
+## Admin dashboard (`candex-dashboard`)
+
+The dashboard follows the same release-script style: `npm run release` bumps `package.json` and `CHANGELOG.md` and tags the version (web only, no mobile files). Its version is currently 1.0.0. CI runs on every change; there is no store or deploy workflow in the repository, so its deployment is handled elsewhere *(to confirm)*.
+
+## Versioning
+
+Each project has its own semantic version and its own `CHANGELOG.md` — the app, the API, and the dashboard move independently.
 
 ## Where to go next
 
-- Running it locally → [Local Installation](/en/local-installation/)
-- Deploying the apps → [Deployment](/en/deployment/)
+- The runtime, images, and infrastructure → [Deployment](/en/deployment/)
+- The checks that gate a release → [Testing](/en/testing/) · [Software Quality](/en/software-quality/)
