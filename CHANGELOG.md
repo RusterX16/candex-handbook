@@ -3,6 +3,18 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.14.0] — 2026-10-22
+
+### Added
+- **UI / UX** handbook (EN + FR): the app's Ionic design tokens (brand palette +
+  Rubik typography), the Light/Dark/System theming via `ThemeService`, the shared
+  component library, the three-tab navigation shell and auth stack, the recurring
+  interaction patterns (modals, inline validation, banners), and the ngx-translate
+  EN/FR internationalization.
+- Rendered the design tokens as visible colour swatches (print-safe) instead of a
+  plain hex table.
+- New **UI / UX** entry in the Architecture sidebar group.
+
 ## [0.13.0] — 2026-10-22
 
 ### Added

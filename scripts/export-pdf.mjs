@@ -24,7 +24,7 @@ const OUT_PUBLIC = path.join(__dirname, '..', 'public', 'pdf');
 const PORT = 8099;
 
 // Handbook routes to export. Add one line per handbook/locale.
-const ROUTES = ['/en/getting-started/', '/fr/getting-started/', '/en/getting-started-dev/', '/fr/getting-started-dev/', '/en/local-installation/', '/fr/local-installation/', '/en/architecture/', '/fr/architecture/', '/en/database/', '/fr/database/', '/en/back-end/', '/fr/back-end/', '/en/front-end/', '/fr/front-end/', '/en/api-contracts/', '/fr/api-contracts/', '/en/deployment/', '/fr/deployment/', '/en/backups/', '/fr/backups/', '/en/testing/', '/fr/testing/', '/en/software-quality/', '/fr/software-quality/', '/en/security/', '/fr/security/'];
+const ROUTES = ['/en/getting-started/', '/fr/getting-started/', '/en/getting-started-dev/', '/fr/getting-started-dev/', '/en/local-installation/', '/fr/local-installation/', '/en/architecture/', '/fr/architecture/', '/en/database/', '/fr/database/', '/en/back-end/', '/fr/back-end/', '/en/front-end/', '/fr/front-end/', '/en/api-contracts/', '/fr/api-contracts/', '/en/deployment/', '/fr/deployment/', '/en/backups/', '/fr/backups/', '/en/testing/', '/fr/testing/', '/en/software-quality/', '/fr/software-quality/', '/en/security/', '/fr/security/', '/en/ui-ux/', '/fr/ui-ux/'];
 
 const fileFor = (route) => {
   const parts = route.split('/').filter(Boolean); // ['en','getting-started']
