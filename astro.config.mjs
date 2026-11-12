@@ -15,6 +15,14 @@ export default defineConfig({
         fr: { label: 'Français', lang: 'fr' },
       },
       customCss: ['./src/styles/candex.css'],
+      // public/favicon.svg switches colours itself with prefers-color-scheme;
+      // the PNGs are for browsers without SVG favicons (Safari).
+      favicon: '/favicon.svg',
+      head: [
+        { tag: 'link', attrs: { rel: 'icon', type: 'image/png', href: '/favicon-light.png', media: '(prefers-color-scheme: light)' } },
+        { tag: 'link', attrs: { rel: 'icon', type: 'image/png', href: '/favicon-dark.png', media: '(prefers-color-scheme: dark)' } },
+        { tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/favicon-light.png' } },
+      ],
       components: {
         Head: './src/components/Head.astro',
         PageTitle: './src/components/PageTitle.astro',

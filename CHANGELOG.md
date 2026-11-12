@@ -3,6 +3,36 @@
 All notable changes to the Candex Handbook are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.23.0] — 2026-11-12
+
+### Added
+- **Diagrams**: the API's layers end to end (flowchart + a real `GET /brands/{id}`
+  sequence) in **Back-end**; the NgRx store (actions stream, reducers, effects,
+  selectors, `localStorageSync`) and a "taste a drink" sequence in **Front-end**;
+  the user lifecycle across Firebase and PostgreSQL (state diagram, registration
+  with rollback, email verification, deletion paths) in **Security**.
+- **Code snippets** taken from the real code: controller / service / mapper and
+  exceptions (Back-end), request and error payloads (API / Contracts), a Flyway
+  migration (Database), the NgRx slice and the auth interceptor (Front-end), the
+  Firebase filter and ownership check (Security), an API and a reducer test
+  (Testing), and an SCSS component (UI / UX).
+- **PDF cover page** on every handbook and on the combined PDF: Candex logo,
+  handbook title and description, author, version, and date.
+- **Site icon**: the Candex icon as favicon, following the device's light / dark
+  theme (SVG, with PNG fallbacks).
+
+### Changed
+- Previous / next buttons always sit side by side, including on mobile.
+- JSON examples put one key per line.
+
+### Fixed
+- The response envelope was documented as `{ success, data, error }`; the wire
+  format is the bare payload on success or the bare `Error` on failure.
+- Front-end: store persistence is `localStorage` (`ngrx-store-localstorage`),
+  not Ionic Storage.
+- Mermaid diagrams did not render under `astro dev` (the `mermaid` entry pulled
+  in CommonJS `dayjs`); the self-contained ESM build is imported instead.
+
 ## [0.22.0] — 2026-10-22
 
 ### Changed

@@ -70,6 +70,69 @@ Et sur toute la stack :
 - Les tests d'intégration utilisent **Testcontainers**, pas des mocks : ils exercent du vrai SQL et les vraies migrations.
 - La barrière de **100 % de couverture** de l'API implique que tout nouveau code arrive avec ses tests — et un changement n'est pas terminé tant que la CI n'est pas verte.
 
+### À quoi ressemble un test
+
+Un test unitaire de l'API, tiré de `BrandServiceTest` : le service est construit avec des collaborateurs mockés, les fixtures (`B_ENTITY_LIST`, `B1`…) viennent de `util/test/fixture`, et `verifyNoMoreInteractions` prouve que le service n'a rien fait de plus que prévu :
+
+```java
+@ExtendWith(MockitoExtension.class)
+@DisplayName("BrandService")
+class BrandServiceTest {
+
+    @Mock private BrandRepository brandRepository;
+    @Mock private BrandMapper brandMapper;
+
+    @InjectMocks
+    private BrandService brandService;
+
+    @Nested
+    @DisplayName("getAllBrands()")
+    class GetAllBrands {
+
+        @Test
+        @DisplayName("should return all brands as DTOs")
+        void shouldReturnAllBrands() {
+            // Arrange
+            when(brandRepository.getAllBrandsOrderedById()).thenReturn(B_ENTITY_LIST);
+            when(brandMapper.toDTO(B_ENTITY_LIST)).thenReturn(B_LIST);
+
+            // Act & Assert
+            assertThat(brandService.getAllBrands())
+                    .hasSize(3)
+                    .containsExactly(B1, B2, B3);
+
+            verify(brandRepository).getAllBrandsOrderedById();
+            verify(brandMapper).toDTO(B_ENTITY_LIST);
+            verifyNoMoreInteractions(brandRepository, brandMapper);
+        }
+    }
+}
+```
+
+Un test de reducer front-end, tiré de `user.reducer.spec.ts`. Les reducers sont des fonctions pures, donc pas besoin de `TestBed` — on l'appelle avec un état et une action, et on vérifie l'état qui en sort :
+
+```ts
+describe('tasteDrinkSuccess()', () => {
+  it('should add the owned drink to the collection', () => {
+    // Arrange
+    const action = DrinkActions.tasteDrinkSuccess({
+      drinkId: 2,
+      unlockedAt: '2026-04-18T20:52:52.110917Z',
+    });
+
+    // Act
+    const state = userReducer(initialUserState, action);
+
+    // Assert
+    expect(state.ownedDrinks.entities[2]).toEqual({
+      drinkId: 2,
+      unlockedAt: '2026-04-18T20:52:52.110917Z',
+    });
+    expect(state.error).toBeNull();
+  });
+});
+```
+
 ## Pour aller plus loin
 
 - Style de code, conventions, analyse statique → [Qualité logicielle](/fr/software-quality/)

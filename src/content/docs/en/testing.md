@@ -70,6 +70,69 @@ And across the stack:
 - Integration tests use **Testcontainers**, not mocks, so they exercise real SQL and migrations.
 - The API's **100% coverage** gate means new code ships with its tests — and a change is not done until CI is green.
 
+### What a test looks like
+
+An API unit test, from `BrandServiceTest`: the service is built with mocked collaborators, the fixtures (`B_ENTITY_LIST`, `B1`…) come from `util/test/fixture`, and `verifyNoMoreInteractions` proves the service did nothing it should not have:
+
+```java
+@ExtendWith(MockitoExtension.class)
+@DisplayName("BrandService")
+class BrandServiceTest {
+
+    @Mock private BrandRepository brandRepository;
+    @Mock private BrandMapper brandMapper;
+
+    @InjectMocks
+    private BrandService brandService;
+
+    @Nested
+    @DisplayName("getAllBrands()")
+    class GetAllBrands {
+
+        @Test
+        @DisplayName("should return all brands as DTOs")
+        void shouldReturnAllBrands() {
+            // Arrange
+            when(brandRepository.getAllBrandsOrderedById()).thenReturn(B_ENTITY_LIST);
+            when(brandMapper.toDTO(B_ENTITY_LIST)).thenReturn(B_LIST);
+
+            // Act & Assert
+            assertThat(brandService.getAllBrands())
+                    .hasSize(3)
+                    .containsExactly(B1, B2, B3);
+
+            verify(brandRepository).getAllBrandsOrderedById();
+            verify(brandMapper).toDTO(B_ENTITY_LIST);
+            verifyNoMoreInteractions(brandRepository, brandMapper);
+        }
+    }
+}
+```
+
+A front-end reducer test, from `user.reducer.spec.ts`. Reducers are pure functions, so no `TestBed` is needed — call it with a state and an action, check the state that comes out:
+
+```ts
+describe('tasteDrinkSuccess()', () => {
+  it('should add the owned drink to the collection', () => {
+    // Arrange
+    const action = DrinkActions.tasteDrinkSuccess({
+      drinkId: 2,
+      unlockedAt: '2026-04-18T20:52:52.110917Z',
+    });
+
+    // Act
+    const state = userReducer(initialUserState, action);
+
+    // Assert
+    expect(state.ownedDrinks.entities[2]).toEqual({
+      drinkId: 2,
+      unlockedAt: '2026-04-18T20:52:52.110917Z',
+    });
+    expect(state.error).toBeNull();
+  });
+});
+```
+
 ## Where to go next
 
 - Code style, conventions, static analysis → [Software Quality](/en/software-quality/)

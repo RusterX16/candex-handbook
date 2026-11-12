@@ -61,6 +61,14 @@
 :root[data-theme='dark'] .shots .shot-dark { display: block; }
 .shots figcaption { font-size: .78rem; color: var(--sl-color-gray-3); margin-top: .5rem; line-height: 1.3; }
 
+/* ---- Previous / next: always side by side (Starlight stacks them below ~37rem) ---- */
+.pagination-links { grid-template-columns: 1fr 1fr; }
+.pagination-links [rel='next'] { grid-column: 2; }
+@media (max-width: 40rem) {
+  .pagination-links a { padding: .75rem; gap: .35rem; overflow-wrap: break-word; }
+  .pagination-links .link-title { font-size: var(--sl-text-base); }
+}
+
 /* ---- Print / PDF ---- */
 @media print {
   header.header, .sidebar, .right-sidebar, starlight-menu-button, site-search, mobile-starlight-toc, .pagination-links { display: none !important; }

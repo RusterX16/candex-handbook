@@ -7,12 +7,79 @@ This is the contract reference for `candex-api`. It builds on [Back-end](/en/bac
 
 ## Conventions
 
-- **Envelope** — every response is a `Result<T>`: `{ success, data, error }` (see [Back-end](/en/back-end/#the-response-envelope)).
+- **Envelope** — every response is a `Result<T>` in Java, serialized as the bare payload on success or the bare `Error` on failure (see [Back-end](/en/back-end/#the-response-envelope)).
 - **Status codes** — come from typed exceptions (`404` / `400` / `409` / `422`…); see [Back-end error handling](/en/back-end/#error-handling).
 - **Headers** — list responses carry `X-Total-Count`; creations return `201` with a `Location` header.
 - **Authentication** — send a Firebase ID token as `Authorization: Bearer <token>`.
 - **Access** — per endpoint, in the tables below: `USER_OR_ADMIN` = any authenticated user, `ADMIN` = admin only, `PUBLIC` = no auth, **own** = the authenticated user may only act on their own records.
 - **Base path** — resources are served under the API base (for example `/api/drinks`).
+
+## Calling the API
+
+A read sends the Firebase ID token and gets the bare DTO back:
+
+```bash
+curl https://<api-host>/api/users/firebase/4q8ESFox1Scd8WMT438M5UlZGMy1 \
+  -H "Authorization: Bearer $FIREBASE_ID_TOKEN"
+```
+
+```json
+{
+  "id": 42,
+  "firebaseUid": "4q8ESFox1Scd8WMT438M5UlZGMy1",
+  "username": "therealinvestigator",
+  "displayedName": "Investigator",
+  "email": "investigator@candex.app",
+  "countryCode": "FR",
+  "emailVerified": true,
+  "joinedInVersion": "1.1.10"
+}
+```
+
+Registration (`POST /users`) is what the app sends right after creating the Firebase account. `id`, `emailVerified` and `joinedInVersion` are set by the API, never by the caller:
+
+```json
+{
+  "firebaseUid": "4q8ESFox1Scd8WMT438M5UlZGMy1",
+  "username": "therealinvestigator",
+  "displayedName": "Investigator",
+  "email": "investigator@candex.app",
+  "countryCode": "FR",
+  "birthDate": "2001-07-15"
+}
+```
+
+It answers `201 Created`, a `Location: /users/42` header, and the created user. Unlocking a drink is the smallest write in the API:
+
+```json
+{
+  "userId": 42,
+  "drinkId": 7
+}
+```
+
+It answers with the stored unlock and its server-side timestamp:
+
+```json
+{
+  "userId": 42,
+  "drinkId": 7,
+  "unlockedAt": "2026-11-12T20:52:52"
+}
+```
+
+Every failure has the same shape, whatever the endpoint — here, registering a username that is taken:
+
+```json
+{
+  "name": "UniqueConstraintViolationException",
+  "message": "A UserEntity with username = 'therealinvestigator' already exists.",
+  "status": 409,
+  "timestamp": "2026-11-12 20:52:52"
+}
+```
+
+The client can branch on `status` for the category of error and on `name` for the exact case.
 
 ## Catalogue
 

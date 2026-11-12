@@ -7,12 +7,79 @@ Voici la référence de contrat de `candex-api`. Elle s'appuie sur [Back-end](/f
 
 ## Conventions
 
-- **Enveloppe** — chaque réponse est un `Result<T>` : `{ success, data, error }` (voir [Back-end](/fr/back-end/#lenveloppe-de-réponse)).
+- **Enveloppe** — chaque réponse est un `Result<T>` côté Java, sérialisé en charge utile brute en cas de succès ou en `Error` brute en cas d'échec (voir [Back-end](/fr/back-end/#lenveloppe-de-réponse)).
 - **Codes de statut** — issus d'exceptions typées (`404` / `400` / `409` / `422`…) ; voir [Gestion d'erreurs du Back-end](/fr/back-end/#gestion-derreurs).
 - **En-têtes** — les réponses de liste portent `X-Total-Count` ; les créations renvoient `201` avec un en-tête `Location`.
 - **Authentification** — envoyez un token d'identité Firebase via `Authorization: Bearer <token>`.
 - **Accès** — par endpoint, dans les tableaux : `USER_OR_ADMIN` = tout utilisateur authentifié, `ADMIN` = admin seulement, `PUBLIC` = sans auth, **own** = l'utilisateur authentifié n'agit que sur ses propres enregistrements.
 - **Chemin de base** — les ressources sont servies sous la base de l'API (par exemple `/api/drinks`).
+
+## Appeler l'API
+
+Une lecture envoie l'ID token Firebase et reçoit le DTO brut :
+
+```bash
+curl https://<api-host>/api/users/firebase/4q8ESFox1Scd8WMT438M5UlZGMy1 \
+  -H "Authorization: Bearer $FIREBASE_ID_TOKEN"
+```
+
+```json
+{
+  "id": 42,
+  "firebaseUid": "4q8ESFox1Scd8WMT438M5UlZGMy1",
+  "username": "therealinvestigator",
+  "displayedName": "Investigator",
+  "email": "investigator@candex.app",
+  "countryCode": "FR",
+  "emailVerified": true,
+  "joinedInVersion": "1.1.10"
+}
+```
+
+L'inscription (`POST /users`) est ce que l'app envoie juste après avoir créé le compte Firebase. `id`, `emailVerified` et `joinedInVersion` sont fixés par l'API, jamais par l'appelant :
+
+```json
+{
+  "firebaseUid": "4q8ESFox1Scd8WMT438M5UlZGMy1",
+  "username": "therealinvestigator",
+  "displayedName": "Investigator",
+  "email": "investigator@candex.app",
+  "countryCode": "FR",
+  "birthDate": "2001-07-15"
+}
+```
+
+Elle répond `201 Created`, un en-tête `Location: /users/42` et l'utilisateur créé. Débloquer une boisson est l'écriture la plus simple de l'API :
+
+```json
+{
+  "userId": 42,
+  "drinkId": 7
+}
+```
+
+Elle répond avec le déblocage enregistré et son horodatage serveur :
+
+```json
+{
+  "userId": 42,
+  "drinkId": 7,
+  "unlockedAt": "2026-11-12T20:52:52"
+}
+```
+
+Tous les échecs ont la même forme, quel que soit l'endpoint — ici, l'inscription avec un nom d'utilisateur déjà pris :
+
+```json
+{
+  "name": "UniqueConstraintViolationException",
+  "message": "A UserEntity with username = 'therealinvestigator' already exists.",
+  "status": 409,
+  "timestamp": "2026-11-12 20:52:52"
+}
+```
+
+Le client peut se baser sur `status` pour la catégorie d'erreur et sur `name` pour le cas exact.
 
 ## Catalogue
 

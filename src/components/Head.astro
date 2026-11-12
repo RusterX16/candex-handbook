@@ -4,7 +4,9 @@ import Default from '@astrojs/starlight/components/Head.astro';
 <Default><slot /></Default>
 
 <script>
-  import mermaid from 'mermaid';
+  // Self-contained ESM build: the default entry imports CommonJS deps (dayjs)
+  // that break `astro dev` while mermaid is excluded from Vite's pre-bundling.
+  import mermaid from 'mermaid/dist/mermaid.esm.min.mjs';
 
   const themeName = () =>
     document.documentElement.dataset.theme === 'light' ? 'default' : 'dark';

@@ -36,6 +36,28 @@ Styles are written in SCSS and follow a few strict rules, so the codebase stays 
 - **No floating CSS** — no inline styles in templates and nothing styled outside a `.scss` file; every rule lives in SCSS.
 - **Consistency above all** — the same thing is done the same way everywhere.
 
+Here is what that looks like, trimmed from `update-required.component.scss`: one root block per component, children nested with `&__`, colours only through theme variables (so light and dark work for free), spacing on the scale:
+
+```scss
+.update-required {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 24px;
+  background: var(--ion-background-color);
+
+  &__icon {
+    margin-bottom: 16px;
+    color: var(--ion-color-primary);
+  }
+
+  &__text {
+    margin: 0 0 24px;
+    color: var(--ion-color-medium);
+  }
+}
+```
+
 ## Theming — Light, Dark, System
 
 The app offers three themes through a `ThemeService`: **Light**, **Dark**, and **System** (which follows the device setting). The choice is applied by setting a `theme` attribute on `<body>`, and the token blocks `body[theme=light]` / `body[theme=dark]` swap the palette underneath — every component reacts automatically because it reads the same variables.

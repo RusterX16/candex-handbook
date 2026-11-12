@@ -28,25 +28,176 @@ The principle mirrors the back-end: **components render and dispatch; services a
 State is split into slices — `app`, `auth`, `dex`, `drink`, `preferences`, `user` — each a complete NgRx unit (`actions`, `reducer`, `effects`, `selectors`, `state`). The flow is one-way:
 
 ```mermaid
-flowchart LR
-  comp["Component"]
-  store["Store<br/>(reducers + selectors)"]
+flowchart TB
+  comp["Component / Page"]
+  act(("Actions<br/>stream"))
+  subgraph store["Store"]
+    direction TB
+    red["Reducers<br/>(pure)"]
+    state[("State<br/>auth · user · drink<br/>dex · preferences")]
+    sel["Selectors<br/>(memoized)"]
+    red --> state --> sel
+  end
+  meta["localStorageSync<br/>meta-reducer"]
+  ls[("localStorage")]
   eff["Effects"]
-  api["API service"]
+  svc["API services<br/>+ authInterceptor"]
   be([candex-api])
 
-  comp -->|dispatch| store
-  comp -->|dispatch| eff
-  eff -->|HTTP| api
-  api -->|REST| be
-  eff -->|result action| store
-  store -->|selectors| comp
+  comp -->|"dispatch(action)"| act
+  act --> red
+  act --> eff
+  eff -->|"call"| svc -->|"HTTP + Bearer token"| be
+  be -->|"JSON"| svc --> eff
+  eff -->|"success / failure action"| act
+  sel -->|"select() observable"| comp
+  state <-->|"persist / rehydrate"| meta <--> ls
 
   classDef svc fill:#00B1FF,stroke:#0089c4,color:#001018;
-  class store,eff svc
+  classDef store fill:#033C44,stroke:#02262c,color:#ffffff;
+  class red,sel,eff svc
+  class state,ls store
 ```
 
-A component **dispatches** an action; a **reducer** updates the slice purely, or an **effect** calls the API service and dispatches a result action; **selectors** feed the new state back to components. State persistence across launches is handled by `ngrx-store-localstorage` + Ionic Storage.
+The rules behind the picture:
+
+- **Components only dispatch and select.** Every action goes into a single stream; **reducers** and **effects** both listen to it. A component never knows which of the two handles an action.
+- **Reducers are pure** — `(state, action) → new state`, no I/O. Collections are `@ngrx/entity` adapters (`drinksAdapter` for the catalogue, `ownedDrinksAdapter` for the user's collection).
+- **Effects own the side-effects** — HTTP, Firebase, navigation, toasts, haptics — and always answer with a new action (`…Success` / `…Failure`), never by writing to state themselves.
+- **Slices react to each other through actions**, not imports: `drink` effects emit `tasteDrinkSuccess`, and it is the `user` reducer that records the owned drink.
+- **Selectors join slices**: `DrinkSelectors.selectDrinks` merges the catalogue (`drink`) with the owned drinks (`user`) into `DrinkWithUnlock`, so each drink carries its `unlockedAt` without being stored twice.
+- **Persistence** — the `localStorageSync` meta-reducer (in `main.ts`) mirrors the `auth`, `user`, `drink`, `dex` and `preferences` slices to `localStorage` and rehydrates them at boot, so a relaunch shows the Dex instantly and `AppActions.loadApp` refreshes it in the background. Ionic Storage (`StorageService`) is used separately, for non-store values.
+
+### An action, end to end
+
+Tapping "tasted" on a drink:
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant P as DrinkDetailsPage
+  participant St as Store
+  participant E as DrinkEffects
+  participant API as UserUnlockedDrinkService
+  participant BE as candex-api
+  participant UR as user reducer
+
+  P->>St: dispatch(DrinkActions.tasteDrink({ drinkId }))
+  St->>E: action reaches tasteDrink$
+  E->>St: concatLatestFrom(selectUserId)
+  E->>API: addUnlockedDrink(userId, drinkId)
+  API->>BE: POST /user-unlocked-drinks
+  alt 2xx
+    BE-->>API: UserUnlockedDrink
+    API-->>E: { unlockedAt }
+    E->>St: dispatch(tasteDrinkSuccess({ drinkId, unlockedAt }))
+    St->>UR: ownedDrinksAdapter.upsertOne(...)
+    St-->>P: selectIsDrinkUnlocked(id) emits true
+    E->>E: confetti + haptics (non-dispatching effects)
+  else error
+    BE-->>API: Error
+    E->>St: dispatch(tasteDrinkFailure({ drinkId, error }))
+    E->>E: error haptic
+  end
+```
+
+There is no optimistic update: the drink only shows as tasted once the API has confirmed it.
+
+### The same action in code
+
+Each step of the diagram is a few lines in its own file. The **action** names the intent and carries only what is needed (`store/drink/drink.actions.ts`):
+
+```ts
+const tasteDrink = createAction(
+  '[Drinks] Taste Drink',
+  props<{ drinkId: number }>()
+);
+```
+
+The **page** reads the store through a selector and dispatches — it never calls the API:
+
+```ts
+private readonly drinks = toSignal(
+  this.store.select(DrinkSelectors.selectDrinks),
+  { initialValue: [] }
+);
+
+private dispatchTaste(drinkId: number): void {
+  this.store.dispatch(DrinkActions.tasteDrink({ drinkId }));
+}
+```
+
+The **effect** does the I/O and answers with a new action. `concatLatestFrom` reads the user id from the store only when the action arrives; `mergeMap` lets two drinks be tasted in parallel:
+
+```ts
+tasteDrink$ = createEffect(() => {
+  return this.actions$.pipe(
+    ofType(DrinkActions.tasteDrink),
+    concatLatestFrom(() => this.store.select(UserSelectors.selectUserId)),
+    filter(([, userId]) => Boolean(userId)),
+    mergeMap(([{ drinkId }, userId]) =>
+      this.userUnlockedDrinkService.addUnlockedDrink(userId as number, drinkId).pipe(
+        map((unlocked) => DrinkActions.tasteDrinkSuccess({
+          drinkId,
+          unlockedAt: unlocked.unlockedAt,
+        })),
+        catchError((error) => of(DrinkActions.tasteDrinkFailure({ drinkId, error })))
+      )
+    )
+  );
+});
+```
+
+The **reducer** of another slice (`user`) records the result — pure, no I/O:
+
+```ts
+on(DrinkActions.tasteDrinkSuccess, (state, { drinkId, unlockedAt }): UserState => ({
+  ...state,
+  ownedDrinks: ownedDrinksAdapter.upsertOne({ drinkId, unlockedAt }, state.ownedDrinks),
+})),
+```
+
+And the **selector** joins both slices, so every subscriber of `selectDrinks` sees the new `unlockedAt`:
+
+```ts
+const selectDrinks = createSelector(
+  selectRawDrinks,
+  UserSelectors.selectOwnedDrinkEntities,
+  (drinks, owned): DrinkWithUnlock[] =>
+    drinks.map((drink) => ({
+      ...drink,
+      unlockedAt: owned[drink.id]?.unlockedAt ?? undefined,
+    }))
+);
+```
+
+### Attaching the token
+
+Services never add the `Authorization` header themselves: `auth.interceptor.ts` does it for every request aimed at the API, and lets everything else through untouched:
+
+```ts
+export const authInterceptor: HttpInterceptorFn = (request, next) => {
+  if (!request.url.startsWith(environment.apiUrl)) {
+    return next(request);
+  }
+
+  return from(whenAuthReady(firebase.auth())).pipe(
+    switchMap((user) => {
+      if (!user) {
+        return next(request); // guest: public endpoints only
+      }
+
+      return from(user.getIdToken()).pipe(
+        switchMap((token) => next(request.clone({
+          setHeaders: { Authorization: `Bearer ${token}` },
+        })))
+      );
+    })
+  );
+};
+```
+
+`getIdToken()` returns the cached token and refreshes it on its own when it is about to expire, so the interceptor never has to manage expiry.
 
 ### Navigation
 

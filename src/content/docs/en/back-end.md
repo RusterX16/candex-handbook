@@ -10,18 +10,131 @@ description: The Candex REST API — request flow, the response envelope, the AP
 Every request flows through the same layers. Controllers return a typed **`Result`** envelope; services hold the logic; repositories are Spring Data JPA; and the boundary between the JPA entities and the API shapes is crossed by **MapStruct** mappers.
 
 ```mermaid
-flowchart LR
-  req([HTTP request]) --> ctrl["Controller"]
-  ctrl --> svc["Service"]
-  svc --> repo["Repository"]
-  repo --> pg[("PostgreSQL")]
-  svc -. "DTO ↔ Entity" .-> map["MapStruct mapper"]
-  ctrl --> res([Result envelope])
+flowchart TB
+  app(["candex-app<br/>HttpClient"])
+  subgraph api["candex-api"]
+    direction TB
+    sec["Security filter chain<br/>Firebase token → principal"]
+    ctrl["Controller<br/>@PreAuthorize · Result.ok()"]
+    svc["Service<br/>@Transactional · rules"]
+    map["MapStruct mapper<br/>Entity ↔ DTO"]
+    repo["Repository<br/>Spring Data JPA"]
+    ser["ResultSerializer<br/>Result → JSON"]
+  end
+  pg[("PostgreSQL")]
+
+  app -->|"HTTP + Bearer token"| sec --> ctrl -->|"call"| svc --> repo -->|"SQL"| pg
+  pg -->|"rows"| repo -->|"Entity"| svc
+  svc <-->|"Entity ↔ DTO"| map
+  svc -->|"DTO"| ctrl -->|"Result of DTO"| ser -->|"JSON body"| app
 
   classDef svc fill:#00B1FF,stroke:#0089c4,color:#001018;
   classDef store fill:#033C44,stroke:#02262c,color:#ffffff;
-  class ctrl,svc,repo svc
+  class ctrl,svc,repo,map svc
   class pg store
+```
+
+### A request, end to end
+
+`GET /brands/{id}` as it really runs — `BrandController` → `BrandService` → `BrandRepository` → `BrandMapper`. Every read follows this shape; writes run it in reverse (DTO → `toEntity` → `save`).
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant App as candex-app
+  participant Sec as Security filter
+  participant C as BrandController
+  participant S as BrandService
+  participant R as BrandRepository
+  participant DB as PostgreSQL
+  participant M as BrandMapper
+
+  App->>Sec: GET /api/brands/1 + Bearer ID token
+  Sec->>Sec: verify token, principal = Firebase UID
+  Sec->>C: getBrandById(1), @PreAuthorize checked
+  C->>S: getBrandById(1)
+  S->>R: findById(1)
+  R->>DB: SELECT ... FROM brand WHERE id = 1
+  DB-->>R: row
+  R-->>S: Optional of BrandEntity
+  alt brand found
+    S->>M: toDTO(entity)
+    M-->>S: Brand DTO (appVersion.version → introducedInVersion)
+    S-->>C: Brand
+    C-->>App: 200 + Brand JSON (Result.ok, serialized as data only)
+  else brand missing
+    S-->>C: throw ElementNotFoundException
+    C-->>App: 404 + Error JSON (e.getResponse())
+  end
+```
+
+Three things to notice:
+
+- **The entity never leaves the service.** The mapper runs inside the service, so the controller only ever sees DTOs.
+- **Exceptions are caught in the controller**, not in a global `@ControllerAdvice`: each endpoint lists the `CustomException`s it expects and returns `e.getResponse()`. An exception it does not catch falls through to Spring's default error handling.
+- **Transactions live on the service**, on the write paths (`@Transactional` on `createUser`, `DrinkService` imports, …). Plain reads like this one have none: lazy relations are resolved by the mapper thanks to Spring's default *open-in-view*, which keeps the JPA session open for the whole request.
+
+### The same request in code
+
+The three classes behind that request, trimmed of their Swagger annotations. This is the template every resource follows.
+
+The **controller** declares the route and the access rule, delegates, and turns the outcome into a response — nothing else:
+
+```java
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(ApiPaths.BRANDS)
+@PreAuthorize(SecurityExpressions.USER_OR_ADMIN)
+public class BrandController {
+
+    private final BrandService brandService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Result<Brand>> getBrandById(@PathVariable int id) {
+        try {
+            return Result.ok(brandService.getBrandById(id));
+        } catch (ElementNotFoundException e) {
+            return e.getResponse();
+        }
+    }
+}
+```
+
+The **service** reads through the repository, raises a typed exception when a rule fails, and hands back a DTO — the entity never escapes:
+
+```java
+@Service
+@RequiredArgsConstructor
+public class BrandService {
+
+    private final BrandRepository brandRepository;
+    private final BrandMapper brandMapper;
+
+    public Brand getBrandById(int id) {
+        return brandMapper.toDTO(brandRepository.findById(id).orElseThrow(
+                () -> new ElementNotFoundException(BrandEntity.class, "id", id)
+        ));
+    }
+}
+```
+
+The **mapper** is an interface: MapStruct generates the implementation at compile time. Fields with the same name map themselves; only the differences are declared:
+
+```java
+@Mapper(componentModel = "spring")
+public interface BrandMapper {
+
+    @Mapping(source = "appVersion.version", target = "introducedInVersion")
+    Brand toDTO(BrandEntity entity);
+
+    List<Brand> toDTO(List<BrandEntity> entityList);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(source = "introducedInVersion", target = "appVersion.version")
+    BrandEntity toEntity(Brand dto);
+}
 ```
 
 Each layer has exactly one job:
@@ -40,13 +153,30 @@ The golden rule: entities never reach the controller, and controllers never hold
 
 ## The response envelope
 
-Every endpoint returns a generic `Result<T>`:
+Every endpoint returns a generic `Result<T>` in Java — but **the envelope is not what goes over the wire**. `ResultSerializer` unwraps it: on success the body is the bare `data`, on failure the bare `Error`. The HTTP status is the success flag.
+
+`200` — `GET /brands/1`:
 
 ```json
-{ "success": true, "data": { "...": "..." }, "error": null }
+{
+  "id": 1,
+  "name": "Monster Energy",
+  "introducedInVersion": "1.0.0"
+}
 ```
 
-- `data` carries the payload on success; `error` carries a structured error on failure; `success` is the flag.
+`404` — `GET /brands/999`:
+
+```json
+{
+  "name": "ElementNotFoundException",
+  "message": "BrandEntity not found for id = 999.",
+  "status": 404,
+  "timestamp": "2026-11-12 20:52:52"
+}
+```
+
+- This is why the app types its calls directly as `http.get<Brand>(...)` — there is no `.data` to unwrap.
 - Collection responses add an **`X-Total-Count`** header; creations add a **`Location`** header.
 
 ## API surface
@@ -114,6 +244,35 @@ Every exception extends a common `CustomException`, which **carries its own `Htt
 | `ImageAnalysisException` | 422 | Image analysis fails |
 
 In short: `api` exceptions describe what is wrong with the request; `business` exceptions describe which domain rule was broken.
+
+An exception knows how to turn itself into a response, which is what lets a controller reply with a one-liner (`return e.getResponse();`):
+
+```java
+// CustomException (abstract, extends RuntimeException) — the base of every api / business exception
+public <T> ResponseEntity<Result<T>> getResponse() {
+    Error errorDTO = new Error(
+            getClass().getSimpleName(),   // "ElementNotFoundException"
+            getMessage(),
+            status.value()                // the HttpStatus given in the constructor
+    );
+    return ResponseEntity.status(status).body(new Result<>(errorDTO));
+}
+```
+
+A new rule therefore only needs a new subclass that passes its status up:
+
+```java
+public class UniqueConstraintViolationException extends CustomException {
+
+    public UniqueConstraintViolationException(Class<?> entity, String field, String value) {
+        super(
+                "A %s with %s = '%s' already exists."
+                        .formatted(entity.getSimpleName(), field, value),
+                HttpStatus.CONFLICT
+        );
+    }
+}
+```
 
 ## Validation
 

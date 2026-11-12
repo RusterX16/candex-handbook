@@ -70,7 +70,19 @@ Flyway owns the schema (`spring.flyway.enabled=true`, `locations=classpath:db/mi
 - Applied migrations are **immutable** — never rename, reorder, or edit a migration after it has been deployed.
 - Legacy snapshot scripts are kept under `src/main/resources/sql/archive/`.
 
-To change the schema or reference data, add the next `V<n>__short_description.sql` file; it runs automatically the next time the API starts.
+To change the schema or reference data, add the next `V<n>__short_description.sql` file; it runs automatically the next time the API starts. A real one, `V28__add_app_version_is_mandatory.sql` — a header saying *why*, then the smallest change that does it:
+
+```sql
+-- ═════════════════════════════════════════════════════════════════════════════
+-- Forced app update (feature/262)
+-- ═════════════════════════════════════════════════════════════════════════════
+-- A mandatory version is the minimum the app must run: an installed version
+-- below the highest mandatory one is blocked behind a "Update required" screen.
+ALTER TABLE app_versions
+    ADD COLUMN is_mandatory BOOLEAN NOT NULL DEFAULT FALSE;
+```
+
+Note the `DEFAULT`: a `NOT NULL` column added to a table that already has rows must say what those rows get, or the migration fails in production while passing on an empty local database.
 
 ## World Dex ordering
 

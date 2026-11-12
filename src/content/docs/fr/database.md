@@ -70,7 +70,19 @@ Flyway détient le schéma (`spring.flyway.enabled=true`, `locations=classpath:d
 - Les migrations appliquées sont **immuables** — ne jamais renommer, réordonner ou éditer une migration après déploiement.
 - Les scripts snapshot legacy sont conservés sous `src/main/resources/sql/archive/`.
 
-Pour changer le schéma ou les données de référence, ajoutez le prochain fichier `V<n>__courte_description.sql` ; il s'exécute automatiquement au prochain démarrage de l'API.
+Pour changer le schéma ou les données de référence, ajoutez le prochain fichier `V<n>__courte_description.sql` ; il s'exécute automatiquement au prochain démarrage de l'API. Un vrai exemple, `V28__add_app_version_is_mandatory.sql` — un en-tête qui dit *pourquoi*, puis le plus petit changement qui le fait :
+
+```sql
+-- ═════════════════════════════════════════════════════════════════════════════
+-- Forced app update (feature/262)
+-- ═════════════════════════════════════════════════════════════════════════════
+-- A mandatory version is the minimum the app must run: an installed version
+-- below the highest mandatory one is blocked behind a "Update required" screen.
+ALTER TABLE app_versions
+    ADD COLUMN is_mandatory BOOLEAN NOT NULL DEFAULT FALSE;
+```
+
+Notez le `DEFAULT` : une colonne `NOT NULL` ajoutée à une table qui contient déjà des lignes doit dire ce que ces lignes reçoivent, sinon la migration échoue en production alors qu'elle passe sur une base locale vide.
 
 ## Ordonnancement du World Dex
 
